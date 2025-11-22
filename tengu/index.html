@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tengu Delivery — Cyberpunk Sushi</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Tengu Delivery • Comida japonesa com vibe cyberpunk em Natal/RN. Peça seu yakissoba, sushi, temaki e onigiri direto pelo WhatsApp." />
+
+  <!-- Fonte cyberpunk -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-main: #04000b;
+      --bg-card: rgba(8, 3, 26, 0.92);
+      --accent-pink: #ff005c;
+      --accent-cyan: #35e5ff;
+      --accent-yellow: #ffc857;
+      --text-main: #f7f7ff;
+      --text-muted: #a5a4c7;
+      --border-radius-xl: 24px;
+      --shadow-neon: 0 0 30px rgba(255, 0, 92, 0.55);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      scroll-behavior: smooth;
+      background: radial-gradient(circle at top left, #23002e 0, #04000b 55%, #000000 100%);
+      color: var(--text-main);
+      font-family: "Rajdhani", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Fundo com textura / scanlines */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -50px;
+      background:
+        repeating-linear-gradient(
+          to bottom,
+          rgba(255,255,255,0.03) 0,
+          rgba(255,255,255,0.03) 1px,
+          transparent 1px,
+          transparent 3px
+        ),
+        radial-gradient(circle at top, rgba(107, 0, 255, 0.35), transparent 60%),
+        radial-gradient(circle at bottom, rgba(255, 0, 90, 0.35), transparent 60%);
+      mix-blend-mode: soft-light;
+      pointer-events: none;
+      z-index: -2;
+      animation: bgMove 25s linear infinite alternate;
+    }
+
+    @keyframes bgMove {
+      0% { transform: translate3d(0,0,0); opacity: 0.85; }
+      100% { transform: translate3d(0,-40px,0); opacity: 1; }
+    }
+
+    /* Header */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      background: linear-gradient(90deg, rgba(4,0,11,0.9), rgba(20,5,54,0.9));
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+    }
+
+    .nav-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      overflow: hidden;
+      border: 2px solid rgba(255,255,255,0.12);
+      box-shadow: 0 0 25px rgba(255,0,92,0.75);
+      background: radial-gradient(circle, #1c0024, #050008);
+      flex-shrink: 0;
+    }
+
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .brand-text {
+      line-height: 1.1;
+    }
+
+    .brand-title {
+      font-family: "Orbitron", system-ui;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+    }
+
+    .brand-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 1.25rem;
+      align-items: center;
+    }
+
+    nav a {
+      font-size: 0.85rem;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      position: relative;
+      padding-bottom: 0.25rem;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-pink), var(--accent-cyan));
+      transition: width 0.25s ease-out;
+      box-shadow: var(--shadow-neon);
+    }
+
+    nav a:hover::after,
+    nav a:focus-visible::after {
+      width: 100%;
+    }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-phone {
+      font-size: 0.8rem;
+      color: var(--accent-cyan);
+      opacity: 0.8;
+    }
+
+    .btn {
+      border-radius: 999px;
+      border: none;
+      padding: 0.55rem 1.4rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-neon {
+      color: #05000b;
+      background: linear-gradient(120deg, var(--accent-pink), #ff7f11, var(--accent-yellow));
+      box-shadow: 0 0 25px rgba(255,0,92,0.9);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-neon::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle at 0 0, rgba(255,255,255,0.4), transparent 55%);
+      mix-blend-mode: screen;
+      transform: translateX(-60%);
+      opacity: 0;
+      transition: transform 0.45s ease-out, opacity 0.45s ease-out;
+    }
+
+    .btn-neon:hover::before {
+      transform: translateX(40%);
+      opacity: 1;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.35);
+      color: var(--text-main);
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--accent-cyan);
+      color: var(--accent-cyan);
+      box-shadow: 0 0 16px rgba(53,229,255,0.5);
+    }
+
+    /* Layout principal */
+    main {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 100px 1.5rem 4rem;
+    }
+
+    /* Hero */
+    .hero {
+      min-height: calc(100vh - 80px);
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+      gap: 2rem;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero::before {
+      content: "天狗";
+      position: absolute;
+      right: -4%;
+      top: -6%;
+      font-size: 11rem;
+      font-weight: 700;
+      color: rgba(255,200,87,0.04);
+      text-shadow: 0 0 50px rgba(255,0,92,0.3);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .hero-copy small {
+      font-size: 0.85rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-copy small::before {
+      content: "";
+      width: 26px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent-cyan), transparent);
+      display: block;
+    }
+
+    .glitch {
+      font-family: "Orbitron", system-ui;
+      font-size: clamp(2.4rem, 5vw, 3.7rem);
+      line-height: 1.05;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      position: relative;
+      margin-bottom: 0.75rem;
+    }
+
+    .glitch span {
+      display: block;
+    }
+
+    .glitch-main {
+      text-shadow:
+        0 0 14px rgba(255,0,92,0.9),
+        0 0 40px rgba(53,229,255,0.85);
+    }
+
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      overflow: hidden;
+      mix-blend-mode: screen;
+      pointer-events: none;
+      opacity: 0.75;
+    }
+
+    .glitch::before {
+      color: var(--accent-cyan);
+      transform: translate(-2px, -1px);
+      clip-path: inset(0 0 50% 0);
+      animation: glitchTop 2.1s infinite linear alternate-reverse;
+    }
+
+    .glitch::after {
+      color: var(--accent-pink);
+      transform: translate(2px, 1px);
+      clip-path: inset(50% 0 0 0);
+      animation: glitchBottom 2.1s infinite linear alternate;
+    }
+
+    @keyframes glitchTop {
+      0% { transform: translate(-1px, -1px); }
+      20% { transform: translate(-3px, 1px); }
+      40% { transform: translate(1px, -2px); }
+      60% { transform: translate(-2px, 2px); }
+      80% { transform: translate(3px, -1px); }
+      100% { transform: translate(-1px, 1px); }
+    }
+    @keyframes glitchBottom {
+      0% { transform: translate(1px, 1px); }
+      20% { transform: translate(3px, -1px); }
+      40% { transform: translate(-1px, 2px); }
+      60% { transform: translate(2px, -2px); }
+      80% { transform: translate(-3px, 1px); }
+      100% { transform: translate(1px, -1px); }
+    }
+
+    .hero-desc {
+      font-size: 1rem;
+      max-width: 34rem;
+      color: var(--text-muted);
+      margin-bottom: 1.7rem;
+    }
+
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.75rem;
+    }
+
+    .tag-chip {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      padding: 0.25rem 0.8rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: radial-gradient(circle at top, rgba(255,0,92,0.25), transparent 65%);
+      color: var(--text-main);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .hero-note {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .hero-card {
+      border-radius: var(--border-radius-xl);
+      background: radial-gradient(circle at top left, rgba(255,0,92,0.5), transparent 60%),
+                  radial-gradient(circle at bottom right, rgba(53,229,255,0.45), transparent 60%),
+                  rgba(7,3,28,0.96);
+      padding: 0.85rem;
+      box-shadow: 0 30px 70px rgba(0,0,0,0.9);
+      border: 1px solid rgba(255,255,255,0.12);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: conic-gradient(
+        from 180deg,
+        rgba(255,0,92,0.0),
+        rgba(255,0,92,0.9),
+        rgba(53,229,255,0.9),
+        rgba(255,200,87,0.9),
+        rgba(255,0,92,0.0)
+      );
+      opacity: 0.22;
+      filter: blur(12px);
+      animation: rotateAura 18s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes rotateAura {
+      to { transform: rotate(360deg); }
+    }
+
+    .hero-food {
+      border-radius: calc(var(--border-radius-xl) - 6px);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.22);
+      position: relative;
+      isolation: isolate;
+    }
+
+    .hero-food img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      transform: scale(1.02);
+      transition: transform 0.8s ease-out;
+    }
+
+    .hero-food:hover img {
+      transform: scale(1.08);
+    }
+
+    .hero-food-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(4,0,11,0.9), transparent 55%);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.1rem 1.1rem 1rem;
+    }
+
+    .hero-food-title {
+      font-size: 0.95rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    .hero-food-sub {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .hero-food-pill {
+      align-self: flex-start;
+      margin-top: 0.55rem;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      padding: 0.25rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.5);
+      backdrop-filter: blur(8px);
+      background-color: rgba(4,0,11,0.6);
+    }
+
+    /* Seções */
+    section {
+      margin-top: 3.5rem;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 1rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .section-title {
+      font-size: 1.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-family: "Orbitron", system-ui;
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .section-title::before {
+      content: "";
+      width: 32px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-pink), var(--accent-cyan));
+      box-shadow: var(--shadow-neon);
+    }
+
+    .section-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      max-width: 26rem;
+    }
+
+    /* Cards de produtos */
+    .grid-products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .product-card {
+      position: relative;
+      border-radius: var(--border-radius-xl);
+      overflow: hidden;
+      background: var(--bg-card);
+      border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 25px 60px rgba(0,0,0,0.9);
+    }
+
+    .product-border {
+      position: absolute;
+      inset: -1px;
+      border-radius: inherit;
+      background: conic-gradient(
+        from 220deg,
+        rgba(255,0,92,0.0),
+        rgba(255,0,92,0.75),
+        rgba(53,229,255,0.75),
+        rgba(255,200,87,0.75),
+        rgba(255,0,92,0.0)
+      );
+      opacity: 0;
+      transition: opacity 0.35s ease-out;
+      z-index: -1;
+    }
+
+    .product-card:hover .product-border {
+      opacity: 0.9;
+    }
+
+    .product-image-wrapper {
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(255,255,255,0.15);
+    }
+
+    .product-image-wrapper a {
+      display: block;
+      line-height: 0;
+    }
+
+    .product-image-wrapper img {
+      width: 100%;
+      height: 210px;
+      object-fit: cover;
+      display: block;
+      transform: scale(1.02);
+      transition: transform 0.75s ease-out;
+    }
+
+    .product-card:hover img {
+      transform: scale(1.1);
+    }
+
+    .product-chip {
+      position: absolute;
+      left: 1rem;
+      bottom: 1rem;
+      padding: 0.25rem 0.75rem;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      border-radius: 999px;
+      background: rgba(4,0,11,0.85);
+      border: 1px solid rgba(255,255,255,0.65);
+    }
+
+    .product-body {
+      padding: 0.95rem 1.1rem 1.1rem;
+    }
+
+    .product-title {
+      font-size: 1.05rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-bottom: 0.3rem;
+    }
+
+    .product-tags {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.7rem;
+    }
+
+    .product-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.8rem;
+    }
+
+    .product-price span {
+      display: block;
+      color: var(--accent-yellow);
+      font-weight: 700;
+    }
+
+    .product-price small {
+      color: var(--text-muted);
+      font-size: 0.7rem;
+    }
+
+    .btn-mini {
+      font-size: 0.7rem;
+      padding: 0.4rem 0.9rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: transparent;
+      color: var(--accent-cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      cursor: pointer;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .btn-mini:hover {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 14px rgba(53,229,255,0.6);
+    }
+
+    /* Cardápio */
+    .cardapio-wrapper {
+      border-radius: var(--border-radius-xl);
+      padding: 1.2rem;
+      background: radial-gradient(circle at top left, rgba(255,0,92,0.45), transparent 55%),
+                  radial-gradient(circle at bottom right, rgba(53,229,255,0.45), transparent 55%),
+                  rgba(7,3,28,0.95);
+      border: 1px solid rgba(255,255,255,0.18);
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+      gap: 1.5rem;
+      box-shadow: 0 35px 80px rgba(0,0,0,0.95);
+    }
+
+    .cardapio-image {
+      border-radius: calc(var(--border-radius-xl) - 6px);
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.2);
+      max-height: 480px;
+    }
+
+    .cardapio-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .cardapio-content h3 {
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      margin-bottom: 0.75rem;
+    }
+
+    .cardapio-content p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-bottom: 1.2rem;
+    }
+
+    .bullet-list {
+      list-style: none;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 1.3rem;
+    }
+
+    .bullet-list li {
+      margin-bottom: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .bullet-list span.dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-pink);
+      box-shadow: 0 0 10px rgba(255,0,92,0.8);
+      flex-shrink: 0;
+    }
+
+    .cardapio-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+
+    /* Rodapé */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding: 1.5rem 1.5rem 2.5rem;
+      margin-top: 3rem;
+      max-width: 1160px;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .social {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .social a {
+      color: var(--accent-cyan);
+      text-decoration: none;
+    }
+
+    .social a:hover {
+      text-decoration: underline;
+    }
+
+    /* Floating WhatsApp */
+    .whatsapp-fab {
+      position: fixed;
+      right: 1.25rem;
+      bottom: 1.3rem;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 0, #ffffff, #25d366);
+      box-shadow: 0 0 26px rgba(37,211,102,0.85);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 25;
+      border: 2px solid #04000b;
+    }
+
+    .whatsapp-fab svg {
+      width: 28px;
+      height: 28px;
+      fill: #04000b;
+    }
+
+    .whatsapp-fab::after {
+      content: "Pedir agora";
+      position: absolute;
+      right: 70px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: #04000b;
+      padding: 0.35rem 0.7rem;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-main);
+      border: 1px solid rgba(255,255,255,0.2);
+      opacity: 0;
+      pointer-events: none;
+      white-space: nowrap;
+      transition: opacity 0.2s ease-out, transform 0.2s ease-out;
+    }
+
+    .whatsapp-fab:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) translateX(-4px);
+    }
+
+    /* Scroll reveal */
+    [data-reveal] {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+
+    [data-reveal].is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsivo */
+    @media (max-width: 920px) {
+      .hero {
+        grid-template-columns: minmax(0,1fr);
+      }
+      .hero::before {
+        font-size: 7rem;
+        right: -8%;
+        top: -4%;
+      }
+
+      .hero-card {
+        max-width: 420px;
+        margin-inline: auto;
+      }
+
+      .cardapio-wrapper {
+        grid-template-columns: minmax(0,1fr);
+      }
+    }
+
+    @media (max-width: 720px) {
+      .nav-inner {
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+      nav ul {
+        display: none;
+      }
+      .nav-cta {
+        margin-left: auto;
+      }
+      main {
+        padding-inline: 1rem;
+      }
+      .hero-actions {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .whatsapp-fab::after {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="brand-logo">
+          <!-- Substitua pelo arquivo real da logo -->
+          <img src="logo-tengu.png" alt="Logo Tengu Delivery">
+        </div>
+        <div class="brand-text">
+          <div class="brand-title">Tengu Delivery</div>
+          <div class="brand-sub">Comida japonesa • Natal/RN</div>
+        </div>
+      </div>
+
+      <nav>
+        <ul>
+          <li><a href="#destaques">Destaques</a></li>
+          <li><a href="#cardapio">Cardápio</a></li>
+          <li><a href="#contato">Contato</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-cta">
+        <span class="nav-phone">WhatsApp: (84) 9 1876-8897</span>
+        <a class="btn btn-neon js-wa" href="https://wa.me/558491876897?text=Ol%C3%A1%2C%20vim%20do%20site%20da%20Tengu%20Delivery%20e%20quero%20fazer%20meu%20pedido%21" target="_blank" rel="noopener">
+          Pedir agora
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="hero-copy" data-reveal>
+        <small>Neo Tengu District • 24/7 vibes</small>
+
+        <h1 class="glitch" data-text="Tengu Delivery">
+          <span class="glitch-main">Tengu Delivery</span>
+        </h1>
+
+        <p class="hero-desc">
+          Yakissoba fumegante, sushis luminosos, temakis gigantes e onigiris recheados – tudo com cara de
+          <strong>noite neon em Tóquio</strong>, direto para o seu sofá.
+        </p>
+
+        <div class="hero-tags">
+          <span class="tag-chip">Yakissoba na chapa</span>
+          <span class="tag-chip">Sushi &amp; Temaki</span>
+          <span class="tag-chip">Onigiri artesanal</span>
+        </div>
+
+        <div class="hero-actions">
+          <a class="btn btn-neon js-wa" href="https://wa.me/558491876897?text=Ol%C3%A1%2C%20vim%20do%20site%20da%20Tengu%20Delivery%20e%20quero%20fazer%20meu%20pedido%21" target="_blank" rel="noopener">
+            Fazer pedido no WhatsApp
+          </a>
+          <a href="#cardapio" class="btn btn-ghost">
+            Ver cardápio completo
+          </a>
+          <span class="hero-note">Entrega em Natal/RN • Taxa a partir de R$4,00</span>
+        </div>
+      </div>
+
+      <aside class="hero-card" data-reveal>
+        <div class="hero-food">
+          <!-- Yakissoba imagem internet -->
+          <img src="https://images.pexels.com/photos/19264271/pexels-photo-19264271.jpeg?auto=compress&cs=tinysrgb&w=1200"
+               alt="Yakissoba de camarão em bowl estiloso"
+               loading="lazy">
+          <div class="hero-food-overlay">
+            <div class="hero-food-title">Yakissoba MISTÃO</div>
+            <div class="hero-food-sub">Carne, frango, camarão e legumes no ponto, direto da chapa.</div>
+            <div class="hero-food-pill">Pronto para o delivery ↑</div>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- DESTAQUES -->
+    <section id="destaques">
+      <div class="section-header" data-reveal>
+        <div>
+          <h2 class="section-title">Destaques da Noite</h2>
+          <p class="section-sub">
+            Um preview dos hits do Tengu. Clique nas fotos para ver as imagens originais dos pratos
+            que inspiram nosso cardápio.
+          </p>
+        </div>
+      </div>
+
+      <div class="grid-products">
+        <!-- Yakissoba -->
+        <article class="product-card" data-reveal>
+          <div class="product-border"></div>
+          <div class="product-image-wrapper">
+            <a href="https://www.pexels.com/photo/close-up-top-view-of-a-bowl-with-yakisoba-dish-19264271/"
+               target="_blank" rel="noopener">
+              <img src="https://images.pexels.com/photos/19264271/pexels-photo-19264271.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                   alt="Bowl de yakissoba com carne, frango e camarão">
+            </a>
+            <span class="product-chip">Yakissoba</span>
+          </div>
+          <div class="product-body">
+            <h3 class="product-title">Yakissoba MISTÃO</h3>
+            <p class="product-tags">
+              Carne + frango + camarão + legumes • Individual ou duplo
+            </p>
+            <div class="product-footer">
+              <div class="product-price">
+                <span>R$ 19,99 / 38,99</span>
+                <small>de acordo com o tamanho</small>
+              </div>
+              <a class="btn-mini js-wa"
+                 href="https://wa.me/558491876897?text=Quero%20um%20Yakissoba%20Mist%C3%A3o%20do%20Tengu%20Delivery%21"
+                 target="_blank" rel="noopener">
+                Pedir
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Sushi Combo -->
+        <article class="product-card" data-reveal>
+          <div class="product-border"></div>
+          <div class="product-image-wrapper">
+            <a href="https://www.pexels.com/photo/elegant-assorted-sushi-platter-on-dark-background-31393439/"
+               target="_blank" rel="noopener">
+              <img src="https://images.pexels.com/photos/31393439/pexels-photo-31393439.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                   alt="Combo de sushi variado sobre fundo escuro">
+            </a>
+            <span class="product-chip">Sushi • 8 peças</span>
+          </div>
+          <div class="product-body">
+            <h3 class="product-title">Combo Neon</h3>
+            <p class="product-tags">
+              Uramaki, hossomaki e hot — salmão, camarão empanado e kani.
+            </p>
+            <div class="product-footer">
+              <div class="product-price">
+                <span>R$ 19,79</span>
+                <small>combos de 8 unidades</small>
+              </div>
+              <a class="btn-mini js-wa"
+                 href="https://wa.me/558491876897?text=Quero%20um%20Combo%20de%20Sushis%20Neon%20do%20Tengu%21"
+                 target="_blank" rel="noopener">
+                Pedir
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Temaki -->
+        <article class="product-card" data-reveal>
+          <div class="product-border"></div>
+          <div class="product-image-wrapper">
+            <a href="https://www.pexels.com/photo/delicious-vegetarian-sushi-roll-platter-on-dark-background-31160730/"
+               target="_blank" rel="noopener">
+              <img src="https://images.pexels.com/photos/31160730/pexels-photo-31160730.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                   alt="Temakis e rolls sobre prato escuro">
+            </a>
+            <span class="product-chip">Temaki</span>
+          </div>
+          <div class="product-body">
+            <h3 class="product-title">Temaki Tengu</h3>
+            <p class="product-tags">
+              Salmão, camarão empanado, mix 2 sabores ou kani • bem recheados.
+            </p>
+            <div class="product-footer">
+              <div class="product-price">
+                <span>R$ 20,80</span>
+                <small>tamanho único</small>
+              </div>
+              <a class="btn-mini js-wa"
+                 href="https://wa.me/558491876897?text=Quero%20um%20Temaki%20Tengu%20bem%20recheado%21"
+                 target="_blank" rel="noopener">
+                Pedir
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Onigiri -->
+        <article class="product-card" data-reveal>
+          <div class="product-border"></div>
+          <div class="product-image-wrapper">
+            <a href="https://www.pexels.com/photo/delicious-sushi-and-onigiri-on-a-plate-31317043/"
+               target="_blank" rel="noopener">
+              <img src="https://images.pexels.com/photos/31317043/pexels-photo-31317043.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                   alt="Onigiris e sushi em prato escuro">
+            </a>
+            <span class="product-chip">Onigiri • 2 peças</span>
+          </div>
+          <div class="product-body">
+            <h3 class="product-title">Onigiri Hot & Tradicional</h3>
+            <p class="product-tags">
+              Tuna mayo, chicken mayo ou salmão com creme cheese — perfeito pra acompanhar o anime.
+            </p>
+            <div class="product-footer">
+              <div class="product-price">
+                <span>R$ 16,20</span>
+                <small>porção com 2 unidades</small>
+              </div>
+              <a class="btn-mini js-wa"
+                 href="https://wa.me/558491876897?text=Quero%20Onigiri%20do%20Tengu%20Delivery%21"
+                 target="_blank" rel="noopener">
+                Pedir
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Gyoza -->
+        <article class="product-card" data-reveal>
+          <div class="product-border"></div>
+          <div class="product-image-wrapper">
+            <a href="https://www.pexels.com/photo/delicious-gyoza-dumplings-with-dipping-sauce-30173542/"
+               target="_blank" rel="noopener">
+              <img src="https://images.pexels.com/photos/30173542/pexels-photo-30173542.jpeg?auto=compress&cs=tinysrgb&w=1200"
+                   alt="Gyozas crocantes com molho">
+            </a>
+            <span class="product-chip">Gyoza • 4 peças</span>
+          </div>
+          <div class="product-body">
+            <h3 class="product-title">Gyoza Street</h3>
+            <p class="product-tags">
+              Gyoza de carne ou camarão, mood boteco japonês de beco neon.
+            </p>
+            <div class="product-footer">
+              <div class="product-price">
+                <span>R$ 5,99 / 6,99</span>
+                <small>carne ou camarão</small>
+              </div>
+              <a class="btn-mini js-wa"
+                 href="https://wa.me/558491876897?text=Quero%20uma%20por%C3%A7%C3%A3o%20de%20Gyoza%20Tengu%21"
+                 target="_blank" rel="noopener">
+                Pedir
+              </a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- CARDÁPIO COMPLETO -->
+    <section id="cardapio">
+      <div class="section-header" data-reveal>
+        <div>
+          <h2 class="section-title">Cardápio Tengu</h2>
+          <p class="section-sub">
+            Quer ver todos os sabores de yakissoba, sushi, temaki e onigiri? Confira o cardápio oficial
+            e já manda mensagem no WhatsApp com o seu combo.
+          </p>
+        </div>
+      </div>
+
+      <div class="cardapio-wrapper" data-reveal>
+        <div class="cardapio-image">
+          <!-- Substitua este src pela imagem real do cardápio -->
+          <img src="cardapio-tengu.jpg" alt="Cardápio Tengu Delivery">
+        </div>
+
+        <div class="cardapio-content">
+          <h3>Como pedir?</h3>
+          <p>
+            É simples: abre o cardápio, escolhe seus itens e clica no botão para falar com a equipe Tengu
+            direto pelo WhatsApp. Atendimento rápido, objetivo e sem mistério.
+          </p>
+
+          <ul class="bullet-list">
+            <li><span class="dot"></span> Yakissoba: carne, frango, camarão, misto e mistão.</li>
+            <li><span class="dot"></span> Sushi: uramaki, hossomaki e hot (8 peças).</li>
+            <li><span class="dot"></span> Temakis generosos com salmão, camarão empanado ou mix.</li>
+            <li><span class="dot"></span> Onigiri hot & tradicional em sabores especiais.</li>
+            <li><span class="dot"></span> Entrega a partir de R$4,00 no centro (demais bairros R$5,00).</li>
+          </ul>
+
+          <div class="cardapio-actions">
+            <a class="btn btn-neon"
+               href="cardapio-tengu.jpg"
+               target="_blank" rel="noopener">
+              Abrir cardápio em tamanho cheio
+            </a>
+            <a class="btn btn-ghost js-wa"
+               href="https://wa.me/558491876897?text=Me%20envia%20o%20card%C3%A1pio%20completo%20do%20Tengu%20Delivery%2C%20por%20favor%21"
+               target="_blank" rel="noopener">
+              Receber cardápio no WhatsApp
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTATO / RODAPÉ -->
+    <section id="contato">
+      <footer>
+        <div>
+          © <span id="year"></span> Tengu Delivery • Todos os direitos reservados.
+          <br>
+          Feito na timeline cyberpunk de Natal/RN.
+        </div>
+        <div class="social">
+          <span>Instagram:</span>
+          <a href="https://instagram.com/tengu.delivery" target="_blank" rel="noopener">
+            @tengu.delivery
+          </a>
+          <span>• WhatsApp: (84) 9 1876-8897</span>
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <!-- FAB WhatsApp -->
+  <a class="whatsapp-fab js-wa"
+     href="https://wa.me/558491876897?text=Ol%C3%A1%2C%20vim%20do%20site%20da%20Tengu%20Delivery%20e%20quero%20fazer%20meu%20pedido%21"
+     target="_blank" rel="noopener"
+     aria-label="Fazer pedido pelo WhatsApp">
+    <svg viewBox="0 0 32 32" aria-hidden="true">
+      <path d="M16 3C9.373 3 4 8.373 4 15c0 2.112.552 4.105 1.6 5.889L4 29l8.31-1.571A12.08 12.08 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16 3zm0 2c5.514 0 10 4.486 10 10s-4.486 10-10 10a9.98 9.98 0 0 1-3.989-.84l-.285-.127-4.938.933.944-4.813-.148-.295A9.95 9.95 0 0 1 6 15C6 9.486 10.486 5 16 5zm-2.326 4.5c-.265-.006-.532.002-.8.023-.415.034-.86.137-1.193.54-.316.383-1.105 1.08-1.105 2.635 0 1.555 1.132 3.057 1.29 3.268.16.212 2.193 3.512 5.402 4.781 3.209 1.27 3.209.847 3.788.814.579-.034 1.864-.762 2.129-1.498.265-.736.265-1.367.186-1.497-.079-.13-.291-.212-.609-.371-.318-.159-1.88-.926-2.17-1.032-.291-.106-.503-.159-.716.16-.212.318-.822 1.031-1.008 1.243-.186.212-.371.239-.689.08-.318-.159-1.342-.495-2.557-1.578-0.945-.844-1.583-1.887-1.77-2.205-.186-.318-.02-.49.14-.648.144-.142.318-.371.477-.557.159-.186.212-.318.318-.53.106-.212.053-.398-.027-.557-.079-.159-.701-1.751-.983-2.401-.252-.592-.509-.605-.774-.611z"></path>
+    </svg>
+  </a>
+
+  <script>
+    // Ano automático no rodapé
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Scroll reveal simples
+    const revealEls = document.querySelectorAll("[data-reveal]");
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          io.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    revealEls.forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
