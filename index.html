@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>Tengu Delivery — Cyberpunk Sushi</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Tengu Delivery • Comida japonesa com vibe cyberpunk em Natal/RN. Peça seu yakissoba, sushi, temaki e onigiri direto pelo WhatsApp." />
+  <meta name="description" content="Tengu Delivery • Comida japonesa com vibe cyberpunk em Ceará-Mirim/RN. Peça seu yakissoba, sushi, temaki e onigiri direto pelo WhatsApp." />
 
   <!-- Fonte cyberpunk -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -97,14 +97,25 @@
       align-items: center;
       gap: 0.75rem;
     }
+    
+    .brand-link {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: inherit;
+    }
 
+    .footer-brand {
+      color: inherit;
+      text-decoration: none;
+      font-weight: 700;
+    }
     .brand-logo {
-      width: 46px;
-      height: 46px;
+      width: 150px;
+      height: 56px;
       border-radius: 16px;
       overflow: hidden;
-      border: 2px solid rgba(255,255,255,0.12);
-      box-shadow: 0 0 25px rgba(255,0,92,0.75);
       background: radial-gradient(circle, #1c0024, #050008);
       flex-shrink: 0;
     }
@@ -853,14 +864,15 @@
   <header>
     <div class="nav-inner">
       <div class="brand">
-        <div class="brand-logo">
-          <!-- Substitua pelo arquivo real da logo -->
-          <img src="logo-tengu.png" alt="Logo Tengu Delivery">
-        </div>
-        <div class="brand-text">
-          <div class="brand-title">Tengu Delivery</div>
-          <div class="brand-sub">Comida japonesa • Natal/RN</div>
-        </div>
+        <a class="brand-link" href="#top" title="Ir para o topo" aria-label="Ir para o topo — Tengu Delivery">
+          <div class="brand-logo">
+            <!-- Substitua pelo arquivo real da logo -->
+            <img src="logo-tengu.png" alt="Logo Tengu Delivery">
+          </div>
+          <div class="brand-text">
+
+          </div>
+        </a>
       </div>
 
       <nav>
@@ -908,7 +920,7 @@
           <a href="#cardapio" class="btn btn-ghost">
             Ver cardápio completo
           </a>
-          <span class="hero-note">Entrega em Natal/RN • Taxa a partir de R$4,00</span>
+          <span class="hero-note">Entrega em Ceará-Mirim/RN • Taxa a partir de R$5,00</span>
         </div>
       </div>
 
@@ -1107,7 +1119,7 @@
       <div class="cardapio-wrapper" data-reveal>
         <div class="cardapio-image">
           <!-- Substitua este src pela imagem real do cardápio -->
-          <img src="cardapio-tengu.jpg" alt="Cardápio Tengu Delivery">
+          <img src="WhatsApp Image 2025-11-22 at 19.11.05.jpeg" alt="Cardápio Tengu Delivery">
         </div>
 
         <div class="cardapio-content">
@@ -1127,7 +1139,7 @@
 
           <div class="cardapio-actions">
             <a class="btn btn-neon"
-               href="cardapio-tengu.jpg"
+               href="WhatsApp Image 2025-11-22 at 19.11.05.jpeg"
                target="_blank" rel="noopener">
               Abrir cardápio em tamanho cheio
             </a>
@@ -1145,10 +1157,10 @@
     <section id="contato">
       <footer>
         <div>
-          © <span id="year"></span> Tengu Delivery • Todos os direitos reservados.
-          <br>
-          Feito na timeline cyberpunk de Natal/RN.
-        </div>
+            © <span id="year"></span> <a href="#top" class="footer-brand" title="Ir para o topo">Tengu Delivery</a> • Todos os direitos reservados.
+            <br>
+            Feito na timeline cyberpunk de Ceará-Mirim/RN.
+          </div>
         <div class="social">
           <span>Instagram:</span>
           <a href="https://instagram.com/tengu.delivery" target="_blank" rel="noopener">
