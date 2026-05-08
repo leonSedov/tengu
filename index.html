@@ -1,1204 +1,1477 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Tengu Delivery — Cyberpunk Sushi</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Tengu Delivery • Comida japonesa com vibe cyberpunk em Ceará-Mirim/RN. Peça seu yakissoba, sushi, temaki e onigiri direto pelo WhatsApp." />
-
-  <!-- Fonte cyberpunk -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --bg-main: #04000b;
-      --bg-card: rgba(8, 3, 26, 0.92);
-      --accent-pink: #ff005c;
-      --accent-cyan: #35e5ff;
-      --accent-yellow: #ffc857;
-      --text-main: #f7f7ff;
-      --text-muted: #a5a4c7;
-      --border-radius-xl: 24px;
-      --shadow-neon: 0 0 30px rgba(255, 0, 92, 0.55);
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
-      scroll-behavior: smooth;
-      background: radial-gradient(circle at top left, #23002e 0, #04000b 55%, #000000 100%);
-      color: var(--text-main);
-      font-family: "Rajdhani", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
-    body {
-      min-height: 100vh;
-      position: relative;
-      overflow-x: hidden;
-    }
-
-    /* Fundo com textura / scanlines */
-    body::before {
-      content: "";
-      position: fixed;
-      inset: -50px;
-      background:
-        repeating-linear-gradient(
-          to bottom,
-          rgba(255,255,255,0.03) 0,
-          rgba(255,255,255,0.03) 1px,
-          transparent 1px,
-          transparent 3px
-        ),
-        radial-gradient(circle at top, rgba(107, 0, 255, 0.35), transparent 60%),
-        radial-gradient(circle at bottom, rgba(255, 0, 90, 0.35), transparent 60%);
-      mix-blend-mode: soft-light;
-      pointer-events: none;
-      z-index: -2;
-      animation: bgMove 25s linear infinite alternate;
-    }
-
-    @keyframes bgMove {
-      0% { transform: translate3d(0,0,0); opacity: 0.85; }
-      100% { transform: translate3d(0,-40px,0); opacity: 1; }
-    }
-
-    /* Header */
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 20;
-      backdrop-filter: blur(18px);
-      background: linear-gradient(90deg, rgba(4,0,11,0.9), rgba(20,5,54,0.9));
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-      box-shadow: 0 10px 40px rgba(0,0,0,0.8);
-    }
-
-    .nav-inner {
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 0.75rem 1.5rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.5rem;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-    
-    .brand-link {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .footer-brand {
-      color: inherit;
-      text-decoration: none;
-      font-weight: 700;
-    }
-    .brand-logo {
-      width: 150px;
-      height: 56px;
-      border-radius: 16px;
-      overflow: hidden;
-      background: radial-gradient(circle, #1c0024, #050008);
-      flex-shrink: 0;
-    }
-
-    .brand-logo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .brand-text {
-      line-height: 1.1;
-    }
-
-    .brand-title {
-      font-family: "Orbitron", system-ui;
-      font-weight: 800;
-      letter-spacing: 0.16em;
-      font-size: 0.95rem;
-      text-transform: uppercase;
-    }
-
-    .brand-sub {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 1.25rem;
-      align-items: center;
-    }
-
-    nav a {
-      font-size: 0.85rem;
-      text-decoration: none;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--text-muted);
-      position: relative;
-      padding-bottom: 0.25rem;
-    }
-
-    nav a::after {
-      content: "";
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent-pink), var(--accent-cyan));
-      transition: width 0.25s ease-out;
-      box-shadow: var(--shadow-neon);
-    }
-
-    nav a:hover::after,
-    nav a:focus-visible::after {
-      width: 100%;
-    }
-
-    .nav-cta {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .nav-phone {
-      font-size: 0.8rem;
-      color: var(--accent-cyan);
-      opacity: 0.8;
-    }
-
-    .btn {
-      border-radius: 999px;
-      border: none;
-      padding: 0.55rem 1.4rem;
-      font-size: 0.7rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      cursor: pointer;
-      font-weight: 700;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
-    .btn-neon {
-      color: #05000b;
-      background: linear-gradient(120deg, var(--accent-pink), #ff7f11, var(--accent-yellow));
-      box-shadow: 0 0 25px rgba(255,0,92,0.9);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn-neon::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      background: radial-gradient(circle at 0 0, rgba(255,255,255,0.4), transparent 55%);
-      mix-blend-mode: screen;
-      transform: translateX(-60%);
-      opacity: 0;
-      transition: transform 0.45s ease-out, opacity 0.45s ease-out;
-    }
-
-    .btn-neon:hover::before {
-      transform: translateX(40%);
-      opacity: 1;
-    }
-
-    .btn-ghost {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.35);
-      color: var(--text-main);
-    }
-
-    .btn-ghost:hover {
-      border-color: var(--accent-cyan);
-      color: var(--accent-cyan);
-      box-shadow: 0 0 16px rgba(53,229,255,0.5);
-    }
-
-    /* Layout principal */
-    main {
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 100px 1.5rem 4rem;
-    }
-
-    /* Hero */
-    .hero {
-      min-height: calc(100vh - 80px);
-      display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-      gap: 2rem;
-      align-items: center;
-      position: relative;
-    }
-
-    .hero::before {
-      content: "天狗";
-      position: absolute;
-      right: -4%;
-      top: -6%;
-      font-size: 11rem;
-      font-weight: 700;
-      color: rgba(255,200,87,0.04);
-      text-shadow: 0 0 50px rgba(255,0,92,0.3);
-      pointer-events: none;
-      z-index: -1;
-    }
-
-    .hero-copy small {
-      font-size: 0.85rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--accent-cyan);
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .hero-copy small::before {
-      content: "";
-      width: 26px;
-      height: 1px;
-      background: linear-gradient(90deg, var(--accent-cyan), transparent);
-      display: block;
-    }
-
-    .glitch {
-      font-family: "Orbitron", system-ui;
-      font-size: clamp(2.4rem, 5vw, 3.7rem);
-      line-height: 1.05;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      position: relative;
-      margin-bottom: 0.75rem;
-    }
-
-    .glitch span {
-      display: block;
-    }
-
-    .glitch-main {
-      text-shadow:
-        0 0 14px rgba(255,0,92,0.9),
-        0 0 40px rgba(53,229,255,0.85);
-    }
-
-    .glitch::before,
-    .glitch::after {
-      content: attr(data-text);
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      overflow: hidden;
-      mix-blend-mode: screen;
-      pointer-events: none;
-      opacity: 0.75;
-    }
-
-    .glitch::before {
-      color: var(--accent-cyan);
-      transform: translate(-2px, -1px);
-      clip-path: inset(0 0 50% 0);
-      animation: glitchTop 2.1s infinite linear alternate-reverse;
-    }
-
-    .glitch::after {
-      color: var(--accent-pink);
-      transform: translate(2px, 1px);
-      clip-path: inset(50% 0 0 0);
-      animation: glitchBottom 2.1s infinite linear alternate;
-    }
-
-    @keyframes glitchTop {
-      0% { transform: translate(-1px, -1px); }
-      20% { transform: translate(-3px, 1px); }
-      40% { transform: translate(1px, -2px); }
-      60% { transform: translate(-2px, 2px); }
-      80% { transform: translate(3px, -1px); }
-      100% { transform: translate(-1px, 1px); }
-    }
-    @keyframes glitchBottom {
-      0% { transform: translate(1px, 1px); }
-      20% { transform: translate(3px, -1px); }
-      40% { transform: translate(-1px, 2px); }
-      60% { transform: translate(2px, -2px); }
-      80% { transform: translate(-3px, 1px); }
-      100% { transform: translate(1px, -1px); }
-    }
-
-    .hero-desc {
-      font-size: 1rem;
-      max-width: 34rem;
-      color: var(--text-muted);
-      margin-bottom: 1.7rem;
-    }
-
-    .hero-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-bottom: 1.75rem;
-    }
-
-    .tag-chip {
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      padding: 0.25rem 0.8rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.2);
-      background: radial-gradient(circle at top, rgba(255,0,92,0.25), transparent 65%);
-      color: var(--text-main);
-    }
-
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      align-items: center;
-    }
-
-    .hero-note {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-    }
-
-    .hero-card {
-      border-radius: var(--border-radius-xl);
-      background: radial-gradient(circle at top left, rgba(255,0,92,0.5), transparent 60%),
-                  radial-gradient(circle at bottom right, rgba(53,229,255,0.45), transparent 60%),
-                  rgba(7,3,28,0.96);
-      padding: 0.85rem;
-      box-shadow: 0 30px 70px rgba(0,0,0,0.9);
-      border: 1px solid rgba(255,255,255,0.12);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-card::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      background: conic-gradient(
-        from 180deg,
-        rgba(255,0,92,0.0),
-        rgba(255,0,92,0.9),
-        rgba(53,229,255,0.9),
-        rgba(255,200,87,0.9),
-        rgba(255,0,92,0.0)
-      );
-      opacity: 0.22;
-      filter: blur(12px);
-      animation: rotateAura 18s linear infinite;
-      z-index: -1;
-    }
-
-    @keyframes rotateAura {
-      to { transform: rotate(360deg); }
-    }
-
-    .hero-food {
-      border-radius: calc(var(--border-radius-xl) - 6px);
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.22);
-      position: relative;
-      isolation: isolate;
-    }
-
-    .hero-food img {
-      width: 100%;
-      height: 100%;
-      display: block;
-      object-fit: cover;
-      transform: scale(1.02);
-      transition: transform 0.8s ease-out;
-    }
-
-    .hero-food:hover img {
-      transform: scale(1.08);
-    }
-
-    .hero-food-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(4,0,11,0.9), transparent 55%);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 1.1rem 1.1rem 1rem;
-    }
-
-    .hero-food-title {
-      font-size: 0.95rem;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-
-    .hero-food-sub {
-      font-size: 0.82rem;
-      color: var(--text-muted);
-    }
-
-    .hero-food-pill {
-      align-self: flex-start;
-      margin-top: 0.55rem;
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      padding: 0.25rem 0.9rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.5);
-      backdrop-filter: blur(8px);
-      background-color: rgba(4,0,11,0.6);
-    }
-
-    /* Seções */
-    section {
-      margin-top: 3.5rem;
-    }
-
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 1rem;
-      margin-bottom: 1.8rem;
-    }
-
-    .section-title {
-      font-size: 1.4rem;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      font-family: "Orbitron", system-ui;
-      display: flex;
-      align-items: center;
-      gap: 0.55rem;
-    }
-
-    .section-title::before {
-      content: "";
-      width: 32px;
-      height: 2px;
-      background: linear-gradient(90deg, var(--accent-pink), var(--accent-cyan));
-      box-shadow: var(--shadow-neon);
-    }
-
-    .section-sub {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      max-width: 26rem;
-    }
-
-    /* Cards de produtos */
-    .grid-products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 1.5rem;
-    }
-
-    .product-card {
-      position: relative;
-      border-radius: var(--border-radius-xl);
-      overflow: hidden;
-      background: var(--bg-card);
-      border: 1px solid rgba(255,255,255,0.12);
-      box-shadow: 0 25px 60px rgba(0,0,0,0.9);
-    }
-
-    .product-border {
-      position: absolute;
-      inset: -1px;
-      border-radius: inherit;
-      background: conic-gradient(
-        from 220deg,
-        rgba(255,0,92,0.0),
-        rgba(255,0,92,0.75),
-        rgba(53,229,255,0.75),
-        rgba(255,200,87,0.75),
-        rgba(255,0,92,0.0)
-      );
-      opacity: 0;
-      transition: opacity 0.35s ease-out;
-      z-index: -1;
-    }
-
-    .product-card:hover .product-border {
-      opacity: 0.9;
-    }
-
-    .product-image-wrapper {
-      position: relative;
-      overflow: hidden;
-      border-bottom: 1px solid rgba(255,255,255,0.15);
-    }
-
-    .product-image-wrapper a {
-      display: block;
-      line-height: 0;
-    }
-
-    .product-image-wrapper img {
-      width: 100%;
-      height: 210px;
-      object-fit: cover;
-      display: block;
-      transform: scale(1.02);
-      transition: transform 0.75s ease-out;
-    }
-
-    .product-card:hover img {
-      transform: scale(1.1);
-    }
-
-    .product-chip {
-      position: absolute;
-      left: 1rem;
-      bottom: 1rem;
-      padding: 0.25rem 0.75rem;
-      font-size: 0.65rem;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      border-radius: 999px;
-      background: rgba(4,0,11,0.85);
-      border: 1px solid rgba(255,255,255,0.65);
-    }
-
-    .product-body {
-      padding: 0.95rem 1.1rem 1.1rem;
-    }
-
-    .product-title {
-      font-size: 1.05rem;
-      text-transform: uppercase;
-      letter-spacing: 0.16em;
-      margin-bottom: 0.3rem;
-    }
-
-    .product-tags {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-bottom: 0.7rem;
-    }
-
-    .product-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 0.75rem;
-      font-size: 0.8rem;
-    }
-
-    .product-price span {
-      display: block;
-      color: var(--accent-yellow);
-      font-weight: 700;
-    }
-
-    .product-price small {
-      color: var(--text-muted);
-      font-size: 0.7rem;
-    }
-
-    .btn-mini {
-      font-size: 0.7rem;
-      padding: 0.4rem 0.9rem;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.4);
-      background: transparent;
-      color: var(--accent-cyan);
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      cursor: pointer;
-      text-decoration: none;
-      white-space: nowrap;
-    }
-
-    .btn-mini:hover {
-      border-color: var(--accent-cyan);
-      box-shadow: 0 0 14px rgba(53,229,255,0.6);
-    }
-
-    /* Cardápio */
-    .cardapio-wrapper {
-      border-radius: var(--border-radius-xl);
-      padding: 1.2rem;
-      background: radial-gradient(circle at top left, rgba(255,0,92,0.45), transparent 55%),
-                  radial-gradient(circle at bottom right, rgba(53,229,255,0.45), transparent 55%),
-                  rgba(7,3,28,0.95);
-      border: 1px solid rgba(255,255,255,0.18);
-      position: relative;
-      display: grid;
-      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-      gap: 1.5rem;
-      box-shadow: 0 35px 80px rgba(0,0,0,0.95);
-    }
-
-    .cardapio-image {
-      border-radius: calc(var(--border-radius-xl) - 6px);
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.2);
-      max-height: 480px;
-    }
-
-    .cardapio-image img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .cardapio-content h3 {
-      font-size: 1.1rem;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      margin-bottom: 0.75rem;
-    }
-
-    .cardapio-content p {
-      font-size: 0.9rem;
-      color: var(--text-muted);
-      margin-bottom: 1.2rem;
-    }
-
-    .bullet-list {
-      list-style: none;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 1.3rem;
-    }
-
-    .bullet-list li {
-      margin-bottom: 0.25rem;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .bullet-list span.dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: var(--accent-pink);
-      box-shadow: 0 0 10px rgba(255,0,92,0.8);
-      flex-shrink: 0;
-    }
-
-    .cardapio-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-    }
-
-    /* Rodapé */
-    footer {
-      border-top: 1px solid rgba(255,255,255,0.1);
-      padding: 1.5rem 1.5rem 2.5rem;
-      margin-top: 3rem;
-      max-width: 1160px;
-      margin-left: auto;
-      margin-right: auto;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: space-between;
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
-
-    .social {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    .social a {
-      color: var(--accent-cyan);
-      text-decoration: none;
-    }
-
-    .social a:hover {
-      text-decoration: underline;
-    }
-
-    /* Floating WhatsApp */
-    .whatsapp-fab {
-      position: fixed;
-      right: 1.25rem;
-      bottom: 1.3rem;
-      width: 58px;
-      height: 58px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 0, #ffffff, #25d366);
-      box-shadow: 0 0 26px rgba(37,211,102,0.85);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      z-index: 25;
-      border: 2px solid #04000b;
-    }
-
-    .whatsapp-fab svg {
-      width: 28px;
-      height: 28px;
-      fill: #04000b;
-    }
-
-    .whatsapp-fab::after {
-      content: "Pedir agora";
-      position: absolute;
-      right: 70px;
-      top: 50%;
-      transform: translateY(-50%);
-      background: #04000b;
-      padding: 0.35rem 0.7rem;
-      border-radius: 999px;
-      font-size: 0.7rem;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--text-main);
-      border: 1px solid rgba(255,255,255,0.2);
-      opacity: 0;
-      pointer-events: none;
-      white-space: nowrap;
-      transition: opacity 0.2s ease-out, transform 0.2s ease-out;
-    }
-
-    .whatsapp-fab:hover::after {
-      opacity: 1;
-      transform: translateY(-50%) translateX(-4px);
-    }
-
-    /* Scroll reveal */
-    [data-reveal] {
-      opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
-    }
-
-    [data-reveal].is-visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Responsivo */
-    @media (max-width: 920px) {
-      .hero {
-        grid-template-columns: minmax(0,1fr);
-      }
-      .hero::before {
-        font-size: 7rem;
-        right: -8%;
-        top: -4%;
-      }
-
-      .hero-card {
-        max-width: 420px;
-        margin-inline: auto;
-      }
-
-      .cardapio-wrapper {
-        grid-template-columns: minmax(0,1fr);
-      }
-    }
-
-    @media (max-width: 720px) {
-      .nav-inner {
-        flex-wrap: wrap;
-        gap: 0.75rem;
-      }
-      nav ul {
-        display: none;
-      }
-      .nav-cta {
-        margin-left: auto;
-      }
-      main {
-        padding-inline: 1rem;
-      }
-      .hero-actions {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .section-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .whatsapp-fab::after {
-        display: none;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEON SUSHI | Cardápio Digital</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  /* ═══════════════════════════════════════════
+     VARIABLES & RESET
+  ═══════════════════════════════════════════ */
+  :root {
+    --neon-cyan:   #00f5ff;
+    --neon-pink:   #ff2d78;
+    --neon-purple: #b44eff;
+    --neon-green:  #39ff14;
+    --neon-gold:   #ffd700;
+    --bg-void:     #03040a;
+    --bg-dark:     #080c18;
+    --bg-panel:    #0d1229;
+    --bg-card:     #111828;
+    --border-glow: rgba(0,245,255,.25);
+    --text-primary:#e8f4ff;
+    --text-dim:    #7a9bbf;
+    --font-hud:    'Orbitron', sans-serif;
+    --font-body:   'Rajdhani', sans-serif;
+    --font-mono:   'Share Tech Mono', monospace;
+    --transition:  .3s cubic-bezier(.25,.8,.25,1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-void);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* scanlines overlay */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,.18) 2px,
+      rgba(0,0,0,.18) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* noise grain */
+  body::after {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9998;
+    opacity: .4;
+  }
+
+  /* ═══════════════════════════════════════════
+     SCREENS
+  ═══════════════════════════════════════════ */
+  .screen {
+    display: none;
+    min-height: 100vh;
+    padding-bottom: 6rem;
+    animation: screenIn .45s ease both;
+  }
+  .screen.active { display: block; }
+
+  @keyframes screenIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ═══════════════════════════════════════════
+     HEADER / NAV
+  ═══════════════════════════════════════════ */
+  header {
+    position: sticky; top: 0; z-index: 100;
+    background: linear-gradient(180deg, rgba(3,4,10,.98) 0%, rgba(3,4,10,.85) 100%);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-glow);
+    padding: .85rem 1.2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 2px 30px rgba(0,245,255,.08);
+  }
+
+  .logo {
+    font-family: var(--font-hud);
+    font-size: 1.05rem;
+    font-weight: 900;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    background: linear-gradient(90deg, var(--neon-cyan), var(--neon-purple));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    text-shadow: none;
+    filter: drop-shadow(0 0 6px rgba(0,245,255,.5));
+    cursor: pointer;
+  }
+
+  .logo span { color: var(--neon-pink); -webkit-text-fill-color: var(--neon-pink); filter: none; }
+
+  .cart-btn {
+    position: relative;
+    background: none; border: 1px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    width: 2.6rem; height: 2.6rem;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: var(--transition);
+    box-shadow: 0 0 10px rgba(0,245,255,.2), inset 0 0 10px rgba(0,245,255,.05);
+  }
+  .cart-btn:hover {
+    background: rgba(0,245,255,.12);
+    box-shadow: 0 0 20px rgba(0,245,255,.5), inset 0 0 15px rgba(0,245,255,.1);
+  }
+  .cart-badge {
+    position: absolute; top: -6px; right: -6px;
+    background: var(--neon-pink);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-size: .65rem;
+    width: 1.2rem; height: 1.2rem;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 8px var(--neon-pink);
+    animation: pulse 1.5s ease infinite;
+    opacity: 0; transition: opacity .2s;
+  }
+  .cart-badge.visible { opacity: 1; }
+  @keyframes pulse {
+    0%,100% { transform: scale(1); }
+    50%      { transform: scale(1.2); }
+  }
+
+  /* BACK BUTTON */
+  .back-btn {
+    background: none; border: none;
+    color: var(--neon-cyan); font-family: var(--font-mono);
+    font-size: .8rem; letter-spacing: .1em;
+    cursor: pointer; display: flex; align-items: center; gap: .4rem;
+    padding: .3rem .6rem; border-radius: 4px;
+    transition: var(--transition);
+  }
+  .back-btn:hover { background: rgba(0,245,255,.08); text-shadow: 0 0 8px var(--neon-cyan); }
+
+  /* ═══════════════════════════════════════════
+     PAGE TITLE
+  ═══════════════════════════════════════════ */
+  .page-title {
+    font-family: var(--font-hud);
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 15px rgba(0,245,255,.7);
+    padding: 1.4rem 1.2rem .6rem;
+  }
+
+  .page-title small {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: .65rem;
+    color: var(--text-dim);
+    letter-spacing: .08em;
+    font-weight: 400;
+    margin-top: .2rem;
+    text-shadow: none;
+  }
+
+  /* ═══════════════════════════════════════════
+     HERO (HOME)
+  ═══════════════════════════════════════════ */
+  .hero {
+    text-align: center;
+    padding: 2.5rem 1.2rem 1.5rem;
+    position: relative;
+  }
+  .hero-glow {
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 320px; height: 200px;
+    background: radial-gradient(ellipse at center, rgba(180,78,255,.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero h1 {
+    font-family: var(--font-hud);
+    font-size: clamp(1.6rem, 6vw, 2.4rem);
+    font-weight: 900;
+    letter-spacing: .1em;
+    line-height: 1.1;
+    background: linear-gradient(135deg, var(--neon-cyan) 0%, var(--neon-purple) 50%, var(--neon-pink) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 18px rgba(0,245,255,.4));
+    margin-bottom: .6rem;
+  }
+  .hero p {
+    font-family: var(--font-mono);
+    font-size: .8rem;
+    color: var(--text-dim);
+    letter-spacing: .08em;
+  }
+
+  /* ═══════════════════════════════════════════
+     CATEGORY GRID
+  ═══════════════════════════════════════════ */
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding: 1rem 1rem 2rem;
+  }
+
+  .cat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-glow);
+    border-radius: 14px;
+    padding: 1.4rem 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,.4);
+  }
+  .cat-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, transparent 50%, rgba(0,245,255,.03) 100%);
+    transition: var(--transition);
+  }
+  .cat-card:hover {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 24px rgba(0,245,255,.25), 0 8px 32px rgba(0,0,0,.5);
+    transform: translateY(-3px);
+  }
+  .cat-card:hover::before { background: linear-gradient(135deg, transparent 30%, rgba(0,245,255,.07) 100%); }
+
+  .cat-card:active { transform: scale(.97); }
+
+  .cat-thumb {
+    width: 7rem;
+    height: 7rem;
+    margin: 0 auto .75rem;
+    border-radius: 16px;
+    object-fit: cover;
+    display: block;
+    border: 1px solid rgba(255,255,255,.08);
+    background: rgba(255,255,255,.05);
+  }
+
+  .cat-name {
+    font-family: var(--font-hud);
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--neon-cyan);
+    text-shadow: 0 0 10px rgba(0,245,255,.5);
+  }
+
+  .cat-count {
+    font-family: var(--font-mono);
+    font-size: .65rem;
+    color: var(--text-dim);
+    margin-top: .3rem;
+  }
+
+  .cat-accent {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  /* ═══════════════════════════════════════════
+     ITEM LIST
+  ═══════════════════════════════════════════ */
+  .items-list { padding: .5rem 1rem 2rem; display: flex; flex-direction: column; gap: .9rem; }
+
+  .item-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-glow);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: .8rem;
+    transition: var(--transition);
+    position: relative; overflow: hidden;
+  }
+  .item-card::after {
+    content: '';
+    position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: linear-gradient(180deg, var(--neon-cyan), var(--neon-purple));
+    border-radius: 3px 0 0 3px;
+  }
+  .item-card:hover {
+    border-color: rgba(0,245,255,.4);
+    box-shadow: 0 0 18px rgba(0,245,255,.12);
+  }
+
+  .item-thumb {
+    width: 120px;
+    min-width: 120px;
+    height: 100px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(0,245,255,.12);
+    flex-shrink: 0;
+  }
+  .item-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .item-info { flex: 1; }
+
+  .item-name {
+    font-family: var(--font-hud);
+    font-size: .82rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--text-primary);
+    margin-bottom: .25rem;
+  }
+
+  .item-desc {
+    font-size: .8rem;
+    color: var(--text-dim);
+    line-height: 1.4;
+    margin-bottom: .5rem;
+  }
+
+  .item-price {
+    font-family: var(--font-mono);
+    font-size: .95rem;
+    color: var(--neon-green);
+    text-shadow: 0 0 8px rgba(57,255,20,.4);
+    font-weight: 700;
+  }
+
+  .item-price-options { display: flex; flex-direction: column; gap: .2rem; }
+  .item-price-row {
+    display: flex; align-items: center; gap: .5rem;
+    flex-wrap: wrap;
+  }
+  .price-label {
+    font-family: var(--font-mono);
+    font-size: .6rem;
+    color: var(--text-dim);
+    letter-spacing: .05em;
+  }
+
+  .add-btn {
+    background: linear-gradient(135deg, rgba(0,245,255,.12), rgba(180,78,255,.12));
+    border: 1px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    font-family: var(--font-hud);
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    padding: .5rem .8rem;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: var(--transition);
+    box-shadow: 0 0 10px rgba(0,245,255,.15);
+    text-transform: uppercase;
+    flex-shrink: 0;
+    align-self: flex-end;
+  }
+  .add-btn:hover {
+    background: linear-gradient(135deg, rgba(0,245,255,.25), rgba(180,78,255,.25));
+    box-shadow: 0 0 20px rgba(0,245,255,.4);
+    transform: translateY(-1px);
+  }
+  .add-btn:active { transform: scale(.95); }
+
+  /* Size selector for yakissoba */
+  .size-selector {
+    display: flex; gap: .4rem; margin-bottom: .5rem; flex-wrap: wrap;
+  }
+  .size-btn {
+    background: transparent;
+    border: 1px solid var(--border-glow);
+    color: var(--text-dim);
+    font-family: var(--font-mono);
+    font-size: .65rem;
+    padding: .25rem .55rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: var(--transition);
+    letter-spacing: .05em;
+  }
+  .size-btn.selected, .size-btn:hover {
+    border-color: var(--neon-purple);
+    color: var(--neon-purple);
+    background: rgba(180,78,255,.1);
+    box-shadow: 0 0 8px rgba(180,78,255,.25);
+  }
+
+  /* ═══════════════════════════════════════════
+     CART
+  ═══════════════════════════════════════════ */
+  .cart-list { padding: .5rem 1rem; display: flex; flex-direction: column; gap: .8rem; }
+
+  .cart-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border-glow);
+    border-radius: 10px;
+    padding: .9rem 1rem;
+    display: flex; align-items: center; gap: .8rem;
+    animation: slideIn .3s ease;
+  }
+  @keyframes slideIn {
+    from { opacity: 0; transform: translateX(-15px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  .cart-item-info { flex: 1; }
+  .cart-item-name {
+    font-family: var(--font-hud);
+    font-size: .72rem;
+    letter-spacing: .06em;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    margin-bottom: .2rem;
+  }
+  .cart-item-price {
+    font-family: var(--font-mono);
+    font-size: .8rem;
+    color: var(--neon-green);
+  }
+
+  .qty-ctrl { display: flex; align-items: center; gap: .5rem; }
+  .qty-btn {
+    width: 1.8rem; height: 1.8rem;
+    background: rgba(0,245,255,.08);
+    border: 1px solid var(--neon-cyan);
+    color: var(--neon-cyan);
+    border-radius: 6px;
+    font-size: .9rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: var(--transition);
+    flex-shrink: 0;
+  }
+  .qty-btn:hover { background: rgba(0,245,255,.2); box-shadow: 0 0 8px rgba(0,245,255,.3); }
+
+  .qty-display {
+    font-family: var(--font-mono);
+    font-size: .85rem;
+    color: var(--text-primary);
+    min-width: 1.5rem;
+    text-align: center;
+  }
+
+  .remove-btn {
+    background: none; border: none;
+    color: var(--neon-pink);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: .3rem;
+    transition: var(--transition);
+    border-radius: 4px;
+  }
+  .remove-btn:hover { background: rgba(255,45,120,.12); box-shadow: 0 0 8px rgba(255,45,120,.3); }
+
+  /* CART TOTAL */
+  .cart-total-bar {
+    margin: 1rem 1rem .5rem;
+    background: var(--bg-panel);
+    border: 1px solid var(--neon-purple);
+    border-radius: 12px;
+    padding: 1rem 1.2rem;
+    box-shadow: 0 0 20px rgba(180,78,255,.15);
+  }
+  .total-row {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: .4rem;
+  }
+  .total-label {
+    font-family: var(--font-mono);
+    font-size: .75rem;
+    color: var(--text-dim);
+    letter-spacing: .06em;
+  }
+  .total-value {
+    font-family: var(--font-hud);
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--neon-green);
+    text-shadow: 0 0 12px rgba(57,255,20,.5);
+  }
+
+  .delivery-info {
+    font-family: var(--font-mono);
+    font-size: .65rem;
+    color: var(--text-dim);
+    margin-top: .4rem;
+  }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: var(--text-dim);
+  }
+  .empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: .5; }
+  .empty-text {
+    font-family: var(--font-mono);
+    font-size: .8rem;
+    letter-spacing: .08em;
+  }
+
+  /* ═══════════════════════════════════════════
+     BOTTOM PRIMARY BUTTON
+  ═══════════════════════════════════════════ */
+  .primary-btn {
+    display: block;
+    width: calc(100% - 2rem);
+    margin: .8rem auto;
+    background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+    border: none;
+    border-radius: 12px;
+    color: #fff;
+    font-family: var(--font-hud);
+    font-size: .85rem;
+    font-weight: 700;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    padding: 1rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition);
+    box-shadow: 0 4px 20px rgba(255,45,120,.4);
+  }
+  .primary-btn::before {
+    content: '';
+    position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,.18), transparent);
+    transition: .5s;
+  }
+  .primary-btn:hover::before { left: 140%; }
+  .primary-btn:hover {
+    box-shadow: 0 6px 30px rgba(255,45,120,.6);
+    transform: translateY(-2px);
+  }
+  .primary-btn:active { transform: scale(.98); }
+  .primary-btn:disabled {
+    opacity: .4; cursor: not-allowed;
+    box-shadow: none; transform: none;
+  }
+
+  /* ═══════════════════════════════════════════
+     REVIEW SCREEN
+  ═══════════════════════════════════════════ */
+  .review-table {
+    margin: .5rem 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border-glow);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .review-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: .8rem 1.1rem;
+    border-bottom: 1px solid rgba(255,255,255,.04);
+    gap: .6rem;
+  }
+  .review-row:last-child { border-bottom: none; }
+  .review-row-name {
+    font-family: var(--font-body);
+    font-size: .85rem;
+    color: var(--text-primary);
+    flex: 1;
+  }
+  .review-row-qty {
+    font-family: var(--font-mono);
+    font-size: .75rem;
+    color: var(--text-dim);
+    margin-right: .5rem;
+  }
+  .review-row-price {
+    font-family: var(--font-mono);
+    font-size: .85rem;
+    color: var(--neon-green);
+  }
+
+  /* ═══════════════════════════════════════════
+     CHECKOUT FORM
+  ═══════════════════════════════════════════ */
+  .form-section {
+    padding: .5rem 1rem 1rem;
+  }
+  .form-group { margin-bottom: 1rem; }
+  .form-label {
+    font-family: var(--font-mono);
+    font-size: .65rem;
+    letter-spacing: .1em;
+    color: var(--neon-cyan);
+    text-transform: uppercase;
+    margin-bottom: .4rem;
+    display: block;
+  }
+  .form-input, .form-select {
+    width: 100%;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-glow);
+    border-radius: 8px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    padding: .75rem 1rem;
+    outline: none;
+    transition: var(--transition);
+    appearance: none;
+  }
+  .form-input:focus, .form-select:focus {
+    border-color: var(--neon-cyan);
+    box-shadow: 0 0 15px rgba(0,245,255,.2);
+  }
+  .form-input::placeholder { color: var(--text-dim); }
+
+  /* Payment options */
+  .payment-opts { display: flex; gap: .6rem; flex-wrap: wrap; }
+  .pay-opt {
+    flex: 1; min-width: 5rem;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-glow);
+    border-radius: 10px;
+    padding: .7rem;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .pay-opt.selected {
+    border-color: var(--neon-purple);
+    background: rgba(180,78,255,.12);
+    box-shadow: 0 0 15px rgba(180,78,255,.3);
+  }
+  .pay-opt-icon { font-size: 1.4rem; display: block; margin-bottom: .25rem; }
+  .pay-opt-label {
+    font-family: var(--font-mono);
+    font-size: .65rem;
+    letter-spacing: .06em;
+    color: var(--text-dim);
+  }
+  .pay-opt.selected .pay-opt-label { color: var(--neon-purple); }
+
+  /* PIX box */
+  .pix-box {
+    margin-top: .8rem;
+    background: rgba(57,255,20,.06);
+    border: 1px solid rgba(57,255,20,.3);
+    border-radius: 10px;
+    padding: .8rem 1rem;
+    display: none;
+    animation: fadeIn .3s ease;
+  }
+  .pix-box.show { display: block; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .pix-label {
+    font-family: var(--font-mono);
+    font-size: .65rem;
+    color: var(--neon-green);
+    letter-spacing: .06em;
+    margin-bottom: .3rem;
+  }
+  .pix-key {
+    font-family: var(--font-mono);
+    font-size: .85rem;
+    color: var(--text-primary);
+    word-break: break-all;
+  }
+
+  /* ═══════════════════════════════════════════
+     SUCCESS SCREEN
+  ═══════════════════════════════════════════ */
+  .success-screen {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    min-height: 80vh;
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+  .success-icon {
+    font-size: 4rem;
+    animation: successPop .6s cubic-bezier(.34,1.56,.64,1) both;
+  }
+  @keyframes successPop {
+    from { transform: scale(0); opacity: 0; }
+    to   { transform: scale(1); opacity: 1; }
+  }
+  .success-title {
+    font-family: var(--font-hud);
+    font-size: 1.3rem;
+    font-weight: 900;
+    letter-spacing: .1em;
+    color: var(--neon-green);
+    text-shadow: 0 0 20px rgba(57,255,20,.6);
+    margin: 1rem 0 .5rem;
+  }
+  .success-sub {
+    font-family: var(--font-mono);
+    font-size: .78rem;
+    color: var(--text-dim);
+    line-height: 1.6;
+    max-width: 280px;
+  }
+
+  /* ═══════════════════════════════════════════
+     TOAST NOTIFICATION
+  ═══════════════════════════════════════════ */
+  .toast {
+    position: fixed; bottom: 5.5rem; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--bg-panel);
+    border: 1px solid var(--neon-green);
+    border-radius: 10px;
+    padding: .7rem 1.2rem;
+    font-family: var(--font-mono);
+    font-size: .75rem;
+    color: var(--neon-green);
+    text-shadow: 0 0 8px rgba(57,255,20,.5);
+    box-shadow: 0 0 20px rgba(57,255,20,.25);
+    z-index: 10000;
+    opacity: 0;
+    pointer-events: none;
+    transition: all .3s ease;
+    white-space: nowrap;
+  }
+  .toast.show {
+    opacity: 1; transform: translateX(-50%) translateY(0);
+  }
+
+  /* ═══════════════════════════════════════════
+     FLOATING CART SUMMARY
+  ═══════════════════════════════════════════ */
+  .float-cart {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: linear-gradient(90deg, rgba(8,12,24,.95), rgba(13,18,41,.95));
+    border-top: 1px solid var(--neon-pink);
+    padding: .9rem 1.2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    backdrop-filter: blur(10px);
+    z-index: 200;
+    transform: translateY(100%);
+    transition: transform .4s cubic-bezier(.25,.8,.25,1);
+    box-shadow: 0 -4px 30px rgba(255,45,120,.2);
+  }
+  .float-cart.visible { transform: translateY(0); }
+
+  .float-cart-info { display: flex; flex-direction: column; }
+  .float-cart-count {
+    font-family: var(--font-mono);
+    font-size: .68rem;
+    color: var(--text-dim);
+    letter-spacing: .05em;
+  }
+  .float-cart-total {
+    font-family: var(--font-hud);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--neon-green);
+    text-shadow: 0 0 10px rgba(57,255,20,.5);
+  }
+  .float-cart-btn {
+    background: linear-gradient(135deg, var(--neon-pink), var(--neon-purple));
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    font-family: var(--font-hud);
+    font-size: .75rem;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    padding: .7rem 1.3rem;
+    cursor: pointer;
+    box-shadow: 0 0 18px rgba(255,45,120,.4);
+    transition: var(--transition);
+  }
+  .float-cart-btn:hover { box-shadow: 0 0 28px rgba(255,45,120,.6); }
+
+  /* ═══════════════════════════════════════════
+     DIVIDER
+  ═══════════════════════════════════════════ */
+  .neon-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--neon-cyan), transparent);
+    margin: .8rem 1rem;
+    opacity: .3;
+  }
+
+  /* ═══════════════════════════════════════════
+     CORNER DECORATIONS
+  ═══════════════════════════════════════════ */
+  .corner-dec {
+    position: absolute;
+    width: 18px; height: 18px;
+    border-color: var(--neon-cyan);
+    border-style: solid;
+    opacity: .5;
+  }
+  .corner-dec.tl { top: 6px; left: 6px; border-width: 2px 0 0 2px; }
+  .corner-dec.tr { top: 6px; right: 6px; border-width: 2px 2px 0 0; }
+  .corner-dec.bl { bottom: 6px; left: 6px; border-width: 0 0 2px 2px; }
+  .corner-dec.br { bottom: 6px; right: 6px; border-width: 0 2px 2px 0; }
+
+  /* ═══════════════════════════════════════════
+     LOADING SPINNER
+  ═══════════════════════════════════════════ */
+  .spinner {
+    display: inline-block; width: 1.2rem; height: 1.2rem;
+    border: 2px solid rgba(255,255,255,.2);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin .6s linear infinite;
+    vertical-align: middle;
+    margin-right: .5rem;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Glitch animation for logo */
+  @keyframes glitch {
+    0%, 90%, 100% { transform: none; filter: none; }
+    92% { transform: translateX(-2px); filter: hue-rotate(90deg); }
+    94% { transform: translateX(2px); filter: hue-rotate(-90deg); }
+    96% { transform: none; }
+  }
+  .logo { animation: glitch 8s ease infinite; }
+</style>
 </head>
 <body>
-  <header>
-    <div class="nav-inner">
-      <div class="brand">
-        <a class="brand-link" href="#top" title="Ir para o topo" aria-label="Ir para o topo — Tengu Delivery">
-          <div class="brand-logo">
-            <!-- Substitua pelo arquivo real da logo -->
-            <img src="logo-tengu.png" alt="Logo Tengu Delivery">
-          </div>
-          <div class="brand-text">
-            <link rel="shortcut icon" href="logo-tengu.png" type="tengu-logo.png">
 
-          </div>
-        </a>
+<!-- ═══════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════ -->
+<header>
+  <div style="display:flex;align-items:center;gap:.8rem;">
+    <button class="back-btn" id="backBtn" style="display:none" onclick="goBack()">
+      ◀ VOLTAR
+    </button>
+    <div class="logo" onclick="goHome()">tengu<span>delivery</span></div>
+  </div>
+  <button class="cart-btn" onclick="showScreen('cart')">
+    🛒
+    <span class="cart-badge" id="cartBadge">0</span>
+  </button>
+</header>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN: HOME
+═══════════════════════════════════════════ -->
+<div id="screen-home" class="screen active">
+  <div class="hero">
+    <div class="hero-glow"></div>
+    <h1>CARDÁPIO<br>DIGITAL</h1>
+    <p>// SELECIONE UMA CATEGORIA //</p>
+  </div>
+
+  <div class="category-grid">
+    <!-- Yakissoba -->
+    <div class="cat-card" onclick="showCategory('yakissoba')">
+      <div class="corner-dec tl"></div><div class="corner-dec tr"></div>
+      <div class="corner-dec bl"></div><div class="corner-dec br"></div>
+      <img class="cat-thumb" src="https://www.lecreuset.com.br/dw/image/v2/BDRT_PRD/on/demandware.static/-/Sites-le-creuset-br-master/default/dwc2ae798c/images/receitas%20&%20gif/Yakissoba-tradicional.png?sw=650&sh=650&sm=fit" alt="Yakissoba">
+      <div class="cat-name">Yakissoba</div>
+      <div class="cat-count">5 opções • INDIV/DUPLO</div>
+      <div class="cat-accent" style="background:linear-gradient(90deg,#00f5ff,#b44eff)"></div>
+    </div>
+
+    <!-- Gyoza -->
+    <div class="cat-card" onclick="showCategory('gyoza')">
+      <div class="corner-dec tl"></div><div class="corner-dec tr"></div>
+      <div class="corner-dec bl"></div><div class="corner-dec br"></div>
+      <img class="cat-thumb" src="https://cookingwithdog.com/wp-content/uploads/2017/04/yaki-gyoza-00-1024x576.jpg" alt="Gyoza">
+      <div class="cat-name">Gyoza</div>
+      <div class="cat-count">2 opções • 4 peças</div>
+      <div class="cat-accent" style="background:linear-gradient(90deg,#ff2d78,#b44eff)"></div>
+    </div>
+
+    <!-- Sushis -->
+    <div class="cat-card" onclick="showCategory('sushis')">
+      <div class="corner-dec tl"></div><div class="corner-dec tr"></div>
+      <div class="corner-dec bl"></div><div class="corner-dec br"></div>
+      <img class="cat-thumb" src="https://www.sabornamesa.com.br/media/k2/items/cache/5031e263a4a258791d6306b2d3d9dbf6_XL.jpg" alt="Sushis">
+      <div class="cat-name">Sushis</div>
+      <div class="cat-count">3 opções • 8 peças</div>
+      <div class="cat-accent" style="background:linear-gradient(90deg,#b44eff,#ff2d78)"></div>
+    </div>
+
+    <!-- Temaki -->
+    <div class="cat-card" onclick="showCategory('temaki')">
+      <div class="corner-dec tl"></div><div class="corner-dec tr"></div>
+      <div class="corner-dec bl"></div><div class="corner-dec br"></div>
+      <img class="cat-thumb" src="https://www.sabornamesa.com.br/media/k2/items/cache/c1034feeb8e544b33d1fc604d40ae043_XL.jpg" alt="Temaki">
+      <div class="cat-name">Temaki</div>
+      <div class="cat-count">3 opções</div>
+      <div class="cat-accent" style="background:linear-gradient(90deg,#39ff14,#00f5ff)"></div>
+    </div>
+
+    <!-- Onigiri -->
+    <div class="cat-card" style="grid-column:1/-1" onclick="showCategory('onigiri')">
+      <div class="corner-dec tl"></div><div class="corner-dec tr"></div>
+      <div class="corner-dec bl"></div><div class="corner-dec br"></div>
+      <img class="cat-thumb" src="https://www.manusmenu.com/wp-content/uploads/2017/08/tuna-mayo-onigiri-japanese-rice-balls.webp" alt="Onigiri">
+      <div class="cat-name">Onigiri Hot & Tradicional</div>
+      <div class="cat-count">3 opções • 2 peças</div>
+      <div class="cat-accent" style="background:linear-gradient(90deg,#ffd700,#ff2d78)"></div>
+    </div>
+  </div>
+
+  <!-- Delivery info -->
+  <div style="margin:.5rem 1rem 1.5rem;background:var(--bg-card);border:1px solid var(--border-glow);border-radius:10px;padding:.9rem 1.1rem;">
+    <div style="font-family:var(--font-mono);font-size:.65rem;color:var(--neon-cyan);letter-spacing:.1em;margin-bottom:.5rem;">📍 TAXA DE ENTREGA</div>
+    <div style="display:flex;justify-content:space-between;font-family:var(--font-body);font-size:.85rem;color:var(--text-dim);margin-bottom:.25rem;">
+      <span>Centro</span><span style="color:var(--neon-green);">R$ 4,00</span>
+    </div>
+    <div style="display:flex;justify-content:space-between;font-family:var(--font-body);font-size:.85rem;color:var(--text-dim);">
+      <span>Demais bairros</span><span style="color:var(--neon-green);">R$ 5,00</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN: CATEGORY ITEMS
+═══════════════════════════════════════════ -->
+<div id="screen-items" class="screen">
+  <div class="page-title" id="categoryTitle">
+    Yakissoba
+    <small>// selecione os itens //</small>
+  </div>
+  <div class="items-list" id="itemsList"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN: CART
+═══════════════════════════════════════════ -->
+<div id="screen-cart" class="screen">
+  <div class="page-title">Carrinho
+    <small>// seus itens selecionados //</small>
+  </div>
+  <div class="cart-list" id="cartList"></div>
+
+  <div class="cart-total-bar" id="cartTotalBar" style="display:none">
+    <div class="total-row">
+      <span class="total-label">SUBTOTAL</span>
+      <span class="total-value" id="cartTotal">R$ 0,00</span>
+    </div>
+    <div class="delivery-info">* Taxa de entrega será adicionada na finalização</div>
+  </div>
+
+  <button class="primary-btn" id="reviewBtn" onclick="showScreen('review')" disabled>
+    REVISAR PEDIDO ▶
+  </button>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN: REVIEW
+═══════════════════════════════════════════ -->
+<div id="screen-review" class="screen">
+  <div class="page-title">Revisão
+    <small>// confirme seu pedido //</small>
+  </div>
+  <div class="review-table" id="reviewTable"></div>
+
+  <div class="cart-total-bar">
+    <div class="total-row">
+      <span class="total-label">TOTAL DO PEDIDO</span>
+      <span class="total-value" id="reviewTotal">R$ 0,00</span>
+    </div>
+  </div>
+
+  <button class="primary-btn" onclick="showScreen('checkout')">
+    FINALIZAR PEDIDO ▶
+  </button>
+  <button class="back-btn" style="display:flex;margin:0 auto .5rem;justify-content:center;font-size:.75rem" onclick="showScreen('cart')">
+    ◀ EDITAR CARRINHO
+  </button>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SCREEN: CHECKOUT
+═══════════════════════════════════════════ -->
+<div id="screen-checkout" class="screen">
+  <div class="page-title">Finalização
+    <small>// seus dados de entrega //</small>
+  </div>
+  <div class="form-section">
+    <div class="form-group">
+      <label class="form-label">👤 Nome completo</label>
+      <input class="form-input" id="fname" type="text" placeholder="Seu nome">
+    </div>
+    <div class="form-group">
+      <label class="form-label">📍 Endereço completo</label>
+      <input class="form-input" id="faddress" type="text" placeholder="Rua, número, bairro">
+    </div>
+    <div class="form-group">
+      <label class="form-label">📱 WhatsApp</label>
+      <input class="form-input" id="fwhatsapp" type="tel" placeholder="(84) 9xxxx-xxxx">
+    </div>
+    <div class="form-group">
+      <label class="form-label">💳 Forma de pagamento</label>
+      <div class="payment-opts">
+        <div class="pay-opt" onclick="selectPayment(this,'Cartão')">
+          <span class="pay-opt-icon">💳</span>
+          <span class="pay-opt-label">Cartão</span>
+        </div>
+        <div class="pay-opt" onclick="selectPayment(this,'Pix')">
+          <span class="pay-opt-icon">⚡</span>
+          <span class="pay-opt-label">Pix</span>
+        </div>
+        <div class="pay-opt" onclick="selectPayment(this,'Dinheiro')">
+          <span class="pay-opt-icon">💵</span>
+          <span class="pay-opt-label">Dinheiro</span>
+        </div>
       </div>
-
-      <nav>
-        <ul>
-          <li><a href="#destaques">Destaques</a></li>
-          <li><a href="#cardapio">Cardápio</a></li>
-          <li><a href="#contato">Contato</a></li>
-        </ul>
-      </nav>
-
-      <div class="nav-cta">
-        <span class="nav-phone">WhatsApp: (84) 9 1876-8897</span>
-        <a class="btn btn-neon js-wa" href="https://wa.me/558491876897?text=Ol%C3%A1%2C%20vim%20do%20site%20da%20Tengu%20Delivery%20e%20quero%20fazer%20meu%20pedido%21" target="_blank" rel="noopener">
-          Pedir agora
-        </a>
+      <div class="pix-box" id="pixBox">
+        <div class="pix-label">🔑 CHAVE PIX</div>
+        <div class="pix-key">leonsedov4@gmail.com</div>
       </div>
     </div>
-  </header>
 
-  <main>
-    <!-- HERO -->
-    <section class="hero" id="top">
-      <div class="hero-copy" data-reveal>
-        <small>Neo Tengu District • 24/7 vibes</small>
+    <div class="neon-divider"></div>
 
-        <h1 class="glitch" data-text="Tengu Delivery">
-          <span class="glitch-main">Tengu Delivery</span>
-        </h1>
+    <!-- Order summary mini -->
+    <div style="font-family:var(--font-mono);font-size:.65rem;color:var(--neon-cyan);letter-spacing:.1em;margin-bottom:.5rem;">
+      RESUMO DO PEDIDO
+    </div>
+    <div id="checkoutSummary" style="font-family:var(--font-body);font-size:.82rem;color:var(--text-dim);line-height:1.8;margin-bottom:.8rem;"></div>
+    <div style="font-family:var(--font-hud);font-size:1rem;color:var(--neon-green);text-shadow:0 0 10px rgba(57,255,20,.5)">
+      TOTAL: <span id="checkoutTotal"></span>
+    </div>
+  </div>
 
-        <p class="hero-desc">
-          Yakissoba fumegante, sushis luminosos, temakis gigantes e onigiris recheados – tudo com cara de
-          <strong>noite neon em Tóquio</strong>, direto para o seu sofá.
-        </p>
+  <button class="primary-btn" id="confirmBtn" onclick="submitOrder()">
+    CONFIRMAR PEDIDO ⚡
+  </button>
+</div>
 
-        <div class="hero-tags">
-          <span class="tag-chip">Yakissoba na chapa</span>
-          <span class="tag-chip">Sushi &amp; Temaki</span>
-          <span class="tag-chip">Onigiri artesanal</span>
+<!-- ═══════════════════════════════════════════
+     SCREEN: SUCCESS
+═══════════════════════════════════════════ -->
+<div id="screen-success" class="screen">
+  <div class="success-screen">
+    <div class="success-icon">✅</div>
+    <div class="success-title">PEDIDO ENVIADO!</div>
+    <p class="success-sub">Seu pedido foi recebido com sucesso.<br>Em breve entraremos em contato pelo WhatsApp para confirmar.</p>
+    <div style="margin-top:2rem;width:100%;max-width:280px">
+      <button class="primary-btn" onclick="resetApp()">NOVO PEDIDO ↺</button>
+    </div>
+  </div>
+</div>
+
+<!-- FLOATING CART -->
+<div class="float-cart" id="floatCart">
+  <div class="float-cart-info">
+    <span class="float-cart-count" id="floatCount">0 itens</span>
+    <span class="float-cart-total" id="floatTotal">R$ 0,00</span>
+  </div>
+  <button class="float-cart-btn" onclick="showScreen('cart')">VER CARRINHO 🛒</button>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════ -->
+<script>
+/* ─── DATA ────────────────────────────────── */
+const MENU = {
+  yakissoba: {
+    label: 'Yakissoba',
+    emoji: '🍜',
+    subtitle: 'Urumaki / Hossomaki / Hot',
+    items: [
+      { id:'y1', name:'Carne',    desc:'Yakissoba tradicional com tiras de carne bovina',    image:'', prices:{INDIV:15.49, DUPLO:29.99} },
+      { id:'y2', name:'Frango',   desc:'Yakissoba leve com frango desfiado temperado',        image:'', prices:{INDIV:15.49, DUPLO:29.99} },
+      { id:'y3', name:'Camarão',  desc:'Yakissoba especial com camarões frescos',             image:'', prices:{INDIV:17.49, DUPLO:33.99} },
+      { id:'y4', name:'Misto',    desc:'Combinação de carne e frango no mesmo prato',         image:'', prices:{INDIV:15.49, DUPLO:29.99} },
+      { id:'y5', name:'Mistão',   desc:'Mix premium: carne, frango e camarão juntos',         image:'', prices:{INDIV:19.99, DUPLO:38.99} },
+      { id:'y6', name:'Brócolis', desc:'Opção vegetariana com brócolis frescos salteados',    image:'', prices:{INDIV:16.29, DUPLO:31.59} },
+    ]
+  },
+  gyoza: {
+    label: 'Gyoza',
+    emoji: '🥟',
+    subtitle: '4 peças por porção',
+    items: [
+      { id:'g1', name:'Carne',   desc:'Gyoza recheado com carne moída temperada e vegetais', image:'', price:5.99 },
+      { id:'g2', name:'Camarão', desc:'Gyoza premium com recheio de camarão fresco',          image:'', price:6.99 },
+    ]
+  },
+  sushis: {
+    label: 'Sushis',
+    emoji: '🍣',
+    subtitle: '8 peças — Urumaki / Hossomaki / Hot',
+    items: [
+      { id:'s1', name:'Salmão',           desc:'Clássico urumaki de salmão fresco grelhado',            image:'', price:19.79 },
+      { id:'s2', name:'Camarão Empanado', desc:'Crocante por fora, suculento por dentro, 8 peças',      image:'', price:19.79 },
+      { id:'s3', name:'Kani',             desc:'Urumaki de kani com cream cheese e cebolinha',           image:'', price:12.79 },
+    ]
+  },
+  temaki: {
+    label: 'Temaki',
+    emoji: '🌮',
+    subtitle: 'Cone japonês artesanal',
+    items: [
+      { id:'t1', name:'Salmão',             desc:'Temaki de salmão fresco com cream cheese e alface',   image:'', price:20.80 },
+      { id:'t2', name:'Camarão Empanado',   desc:'Temaki com camarão empanado crocante e maionese',     image:'', price:20.80 },
+      { id:'t3', name:'Kani',               desc:'Temaki leve de kani com pepino e molho especial',     image:'', price:20.80 },
+    ]
+  },
+  onigiri: {
+    label: 'Onigiri',
+    emoji: '🍙',
+    subtitle: 'Hot & Tradicional — 2 peças',
+    items: [
+      { id:'o1', name:'Tuna Mayo',                 desc:'Onigiri clássico recheado com atum e maionese temperada', image:'', price:16.20 },
+      { id:'o2', name:'Chicken Mayo',              desc:'Frango desfiado com maionese especial dentro do arroz',   image:'', price:16.20 },
+      { id:'o3', name:'Salmão com Cream Cheese',   desc:'Cremoso recheio de salmão com cream cheese suave',        image:'', price:16.20 },
+    ]
+  }
+};
+
+/* ─── STATE ───────────────────────────────── */
+let cart = JSON.parse(localStorage.getItem('neonCart') || '[]');
+let currentCategory = null;
+let selectedPayment = '';
+let screenHistory = ['home'];
+
+/* ─── SCREEN NAVIGATION ───────────────────── */
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-' + name).classList.add('active');
+  window.scrollTo(0, 0);
+
+  const backBtn = document.getElementById('backBtn');
+  backBtn.style.display = (name !== 'home' && name !== 'success') ? 'flex' : 'none';
+
+  if (!screenHistory.includes(name) || screenHistory[screenHistory.length-1] !== name) {
+    screenHistory.push(name);
+  }
+
+  // Update specific screens
+  if (name === 'cart')     renderCart();
+  if (name === 'review')   renderReview();
+  if (name === 'checkout') renderCheckoutSummary();
+  updateFloatCart();
+}
+
+function goBack() {
+  screenHistory.pop();
+  const prev = screenHistory[screenHistory.length - 1] || 'home';
+  showScreen(prev);
+}
+
+function goHome() {
+  screenHistory = ['home'];
+  showScreen('home');
+}
+
+function showCategory(cat) {
+  currentCategory = cat;
+  screenHistory.push('items');
+  const data = MENU[cat];
+  document.getElementById('categoryTitle').innerHTML =
+    `${data.emoji} ${data.label}<small>// ${data.subtitle} //</small>`;
+  renderItems(cat);
+  showScreen('items');
+}
+
+/* ─── RENDER ITEMS ────────────────────────── */
+function renderItems(cat) {
+  const data = MENU[cat];
+  const list = document.getElementById('itemsList');
+  list.innerHTML = '';
+
+  data.items.forEach(item => {
+    const imageSrc = item.image || 'https://via.placeholder.com/100x88/111828/00f5ff?text=Imagem';
+    const isYaki = !!item.prices;
+    const card = document.createElement('div');
+    card.className = 'item-card';
+
+    if (isYaki) {
+      // Yakissoba with size selector
+      card.innerHTML = `
+        <div class="item-thumb"><img src="${imageSrc}" alt="${item.name}"></div>
+        <div class="item-info">
+          <div class="item-name">${item.name}</div>
+          <div class="item-desc">${item.desc}</div>
+          <div class="size-selector">
+            <button class="size-btn selected" data-size="INDIV" onclick="selectSize(this, '${item.id}')">
+              INDIVIDUAL<br><small>R$ ${item.prices.INDIV.toFixed(2)}</small>
+            </button>
+            <button class="size-btn" data-size="DUPLO" onclick="selectSize(this, '${item.id}')">
+              DUPLO<br><small>R$ ${item.prices.DUPLO.toFixed(2)}</small>
+            </button>
+          </div>
+          <div class="item-price" id="price-${item.id}">R$ ${item.prices.INDIV.toFixed(2)}</div>
         </div>
-
-        <div class="hero-actions">
-          <a class="btn btn-neon js-wa" href="https://wa.me/558491876897?text=Ol%C3%A1%2C%20vim%20do%20site%20da%20Tengu%20Delivery%20e%20quero%20fazer%20meu%20pedido%21" target="_blank" rel="noopener">
-            Fazer pedido no WhatsApp
-          </a>
-          <a href="#cardapio" class="btn btn-ghost">
-            Ver cardápio completo
-          </a>
-          <span class="hero-note">Entrega em Ceará-Mirim/RN • Taxa a partir de R$5,00</span>
+        <button class="add-btn" onclick="addYaki('${item.id}')">+ ADD</button>
+      `;
+    } else {
+      card.innerHTML = `
+        <div class="item-thumb"><img src="${imageSrc}" alt="${item.name}"></div>
+        <div class="item-info">
+          <div class="item-name">${item.name}</div>
+          <div class="item-desc">${item.desc}</div>
+          <div class="item-price">R$ ${item.price.toFixed(2)}</div>
         </div>
+        <button class="add-btn" onclick="addItem('${cat}','${item.id}')">+ ADD</button>
+      `;
+    }
+
+    list.appendChild(card);
+  });
+}
+
+function selectSize(btn, itemId) {
+  const siblings = btn.parentElement.querySelectorAll('.size-btn');
+  siblings.forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  const item = MENU.yakissoba.items.find(i => i.id === itemId);
+  const size = btn.dataset.size;
+  document.getElementById('price-' + itemId).textContent = 'R$ ' + item.prices[size].toFixed(2);
+}
+
+function addYaki(itemId) {
+  const item = MENU.yakissoba.items.find(i => i.id === itemId);
+  const sizeBtn = document.querySelector(`[data-size].selected`);
+  // find within this card
+  const cards = document.querySelectorAll('.item-card');
+  let selectedSize = 'INDIV';
+  cards.forEach(card => {
+    const pb = card.querySelector(`#price-${itemId}`);
+    if (pb) {
+      const sel = card.querySelector('.size-btn.selected');
+      if (sel) selectedSize = sel.dataset.size;
+    }
+  });
+  const price = item.prices[selectedSize];
+  const name = `Yakissoba ${item.name} (${selectedSize === 'INDIV' ? 'Individual' : 'Duplo'})`;
+  addToCart({ id: item.id + '_' + selectedSize, name, price, category: 'yakissoba' });
+}
+
+function addItem(cat, itemId) {
+  const item = MENU[cat].items.find(i => i.id === itemId);
+  addToCart({ id: item.id, name: `${MENU[cat].label} ${item.name}`, price: item.price, category: cat });
+}
+
+/* ─── CART LOGIC ──────────────────────────── */
+function addToCart(product) {
+  const existing = cart.find(c => c.id === product.id);
+  if (existing) {
+    existing.qty++;
+  } else {
+    cart.push({ ...product, qty: 1 });
+  }
+  saveCart();
+  updateCartBadge();
+  updateFloatCart();
+  showToast(`✔ ${product.name.split(' ').slice(0,3).join(' ')} adicionado!`);
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(c => c.id !== id);
+  saveCart();
+  renderCart();
+  updateCartBadge();
+  updateFloatCart();
+}
+
+function changeQty(id, delta) {
+  const item = cart.find(c => c.id === id);
+  if (!item) return;
+  item.qty += delta;
+  if (item.qty <= 0) removeFromCart(id);
+  else { saveCart(); renderCart(); updateCartBadge(); updateFloatCart(); }
+}
+
+function saveCart() {
+  localStorage.setItem('neonCart', JSON.stringify(cart));
+}
+
+function getTotal() {
+  return cart.reduce((sum, c) => sum + c.price * c.qty, 0);
+}
+
+function getTotalQty() {
+  return cart.reduce((sum, c) => sum + c.qty, 0);
+}
+
+function fmtPrice(n) {
+  return 'R$ ' + n.toFixed(2).replace('.', ',');
+}
+
+/* ─── RENDER CART ─────────────────────────── */
+function renderCart() {
+  const list = document.getElementById('cartList');
+  const totalBar = document.getElementById('cartTotalBar');
+  const reviewBtn = document.getElementById('reviewBtn');
+
+  list.innerHTML = '';
+
+  if (cart.length === 0) {
+    list.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-icon">🛒</div>
+        <div class="empty-text">// CARRINHO VAZIO //<br>Adicione itens do cardápio</div>
+      </div>`;
+    totalBar.style.display = 'none';
+    reviewBtn.disabled = true;
+    return;
+  }
+
+  reviewBtn.disabled = false;
+  totalBar.style.display = 'block';
+
+  cart.forEach(item => {
+    const div = document.createElement('div');
+    div.className = 'cart-item';
+    div.innerHTML = `
+      <div class="cart-item-info">
+        <div class="cart-item-name">${item.name}</div>
+        <div class="cart-item-price">${fmtPrice(item.price * item.qty)}</div>
       </div>
-
-      <aside class="hero-card" data-reveal>
-        <div class="hero-food">
-          <!-- Yakissoba imagem internet -->
-          <img src="https://images.pexels.com/photos/19264271/pexels-photo-19264271.jpeg?auto=compress&cs=tinysrgb&w=1200"
-               alt="Yakissoba de camarão em bowl estiloso"
-               loading="lazy">
-          <div class="hero-food-overlay">
-            <div class="hero-food-title">Yakissoba MISTÃO</div>
-            <div class="hero-food-sub">Carne, frango, camarão e legumes no ponto, direto da chapa.</div>
-            <div class="hero-food-pill">Pronto para o delivery ↑</div>
-          </div>
-        </div>
-      </aside>
-    </section>
-
-    <!-- DESTAQUES -->
-    <section id="destaques">
-      <div class="section-header" data-reveal>
-        <div>
-          <h2 class="section-title">Destaques da Noite</h2>
-          <p class="section-sub">
-            Um preview dos hits do Tengu. Clique nas fotos para ver as imagens originais dos pratos
-            que inspiram nosso cardápio.
-          </p>
-        </div>
+      <div class="qty-ctrl">
+        <button class="qty-btn" onclick="changeQty('${item.id}',-1)">−</button>
+        <span class="qty-display">${item.qty}</span>
+        <button class="qty-btn" onclick="changeQty('${item.id}',1)">+</button>
       </div>
+      <button class="remove-btn" onclick="removeFromCart('${item.id}')">🗑</button>
+    `;
+    list.appendChild(div);
+  });
 
-      <div class="grid-products">
-        <!-- Yakissoba -->
-        <article class="product-card" data-reveal>
-          <div class="product-border"></div>
-          <div class="product-image-wrapper">
-            <a href="https://www.pexels.com/photo/close-up-top-view-of-a-bowl-with-yakisoba-dish-19264271/"
-               target="_blank" rel="noopener">
-              <img src="https://images.pexels.com/photos/19264271/pexels-photo-19264271.jpeg?auto=compress&cs=tinysrgb&w=1200"
-                   alt="Bowl de yakissoba com carne, frango e camarão">
-            </a>
-            <span class="product-chip">Yakissoba</span>
-          </div>
-          <div class="product-body">
-            <h3 class="product-title">Yakissoba MISTÃO</h3>
-            <p class="product-tags">
-              Carne + frango + camarão + legumes • Individual ou duplo
-            </p>
-            <div class="product-footer">
-              <div class="product-price">
-                <span>R$ 19,99 / 38,99</span>
-                <small>de acordo com o tamanho</small>
-              </div>
-              <a class="btn-mini js-wa"
-                 href="https://wa.me/558491876897?text=Quero%20um%20Yakissoba%20Mist%C3%A3o%20do%20Tengu%20Delivery%21"
-                 target="_blank" rel="noopener">
-                Pedir
-              </a>
-            </div>
-          </div>
-        </article>
+  document.getElementById('cartTotal').textContent = fmtPrice(getTotal());
+}
 
-        <!-- Sushi Combo -->
-        <article class="product-card" data-reveal>
-          <div class="product-border"></div>
-          <div class="product-image-wrapper">
-            <a href="https://www.pexels.com/photo/elegant-assorted-sushi-platter-on-dark-background-31393439/"
-               target="_blank" rel="noopener">
-              <img src="https://images.pexels.com/photos/31393439/pexels-photo-31393439.jpeg?auto=compress&cs=tinysrgb&w=1200"
-                   alt="Combo de sushi variado sobre fundo escuro">
-            </a>
-            <span class="product-chip">Sushi • 8 peças</span>
-          </div>
-          <div class="product-body">
-            <h3 class="product-title">Combo Neon</h3>
-            <p class="product-tags">
-              Uramaki, hossomaki e hot — salmão, camarão empanado e kani.
-            </p>
-            <div class="product-footer">
-              <div class="product-price">
-                <span>R$ 19,79</span>
-                <small>combos de 8 unidades</small>
-              </div>
-              <a class="btn-mini js-wa"
-                 href="https://wa.me/558491876897?text=Quero%20um%20Combo%20de%20Sushis%20Neon%20do%20Tengu%21"
-                 target="_blank" rel="noopener">
-                Pedir
-              </a>
-            </div>
-          </div>
-        </article>
+/* ─── RENDER REVIEW ───────────────────────── */
+function renderReview() {
+  const table = document.getElementById('reviewTable');
+  table.innerHTML = '';
+  cart.forEach(item => {
+    const row = document.createElement('div');
+    row.className = 'review-row';
+    row.innerHTML = `
+      <span class="review-row-name">${item.name}</span>
+      <span class="review-row-qty">x${item.qty}</span>
+      <span class="review-row-price">${fmtPrice(item.price * item.qty)}</span>
+    `;
+    table.appendChild(row);
+  });
+  document.getElementById('reviewTotal').textContent = fmtPrice(getTotal());
+}
 
-        <!-- Temaki -->
-        <article class="product-card" data-reveal>
-          <div class="product-border"></div>
-          <div class="product-image-wrapper">
-            <a href="https://www.pexels.com/photo/delicious-vegetarian-sushi-roll-platter-on-dark-background-31160730/"
-               target="_blank" rel="noopener">
-              <img src="https://images.pexels.com/photos/31160730/pexels-photo-31160730.jpeg?auto=compress&cs=tinysrgb&w=1200"
-                   alt="Temakis e rolls sobre prato escuro">
-            </a>
-            <span class="product-chip">Temaki</span>
-          </div>
-          <div class="product-body">
-            <h3 class="product-title">Temaki Tengu</h3>
-            <p class="product-tags">
-              Salmão, camarão empanado, mix 2 sabores ou kani • bem recheados.
-            </p>
-            <div class="product-footer">
-              <div class="product-price">
-                <span>R$ 20,80</span>
-                <small>tamanho único</small>
-              </div>
-              <a class="btn-mini js-wa"
-                 href="https://wa.me/558491876897?text=Quero%20um%20Temaki%20Tengu%20bem%20recheado%21"
-                 target="_blank" rel="noopener">
-                Pedir
-              </a>
-            </div>
-          </div>
-        </article>
+/* ─── RENDER CHECKOUT SUMMARY ─────────────── */
+function renderCheckoutSummary() {
+  const summary = document.getElementById('checkoutSummary');
+  summary.innerHTML = cart.map(c => `${c.qty}x ${c.name} — ${fmtPrice(c.price * c.qty)}`).join('<br>');
+  document.getElementById('checkoutTotal').textContent = fmtPrice(getTotal());
+}
 
-        <!-- Onigiri -->
-        <article class="product-card" data-reveal>
-          <div class="product-border"></div>
-          <div class="product-image-wrapper">
-            <a href="https://www.pexels.com/photo/delicious-sushi-and-onigiri-on-a-plate-31317043/"
-               target="_blank" rel="noopener">
-              <img src="https://images.pexels.com/photos/31317043/pexels-photo-31317043.jpeg?auto=compress&cs=tinysrgb&w=1200"
-                   alt="Onigiris e sushi em prato escuro">
-            </a>
-            <span class="product-chip">Onigiri • 2 peças</span>
-          </div>
-          <div class="product-body">
-            <h3 class="product-title">Onigiri Hot & Tradicional</h3>
-            <p class="product-tags">
-              Tuna mayo, chicken mayo ou salmão com creme cheese — perfeito pra acompanhar o anime.
-            </p>
-            <div class="product-footer">
-              <div class="product-price">
-                <span>R$ 16,20</span>
-                <small>porção com 2 unidades</small>
-              </div>
-              <a class="btn-mini js-wa"
-                 href="https://wa.me/558491876897?text=Quero%20Onigiri%20do%20Tengu%20Delivery%21"
-                 target="_blank" rel="noopener">
-                Pedir
-              </a>
-            </div>
-          </div>
-        </article>
+/* ─── PAYMENT ─────────────────────────────── */
+function selectPayment(el, method) {
+  document.querySelectorAll('.pay-opt').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedPayment = method;
+  document.getElementById('pixBox').classList.toggle('show', method === 'Pix');
+}
 
-        <!-- Gyoza -->
-        <article class="product-card" data-reveal>
-          <div class="product-border"></div>
-          <div class="product-image-wrapper">
-            <a href="https://www.pexels.com/photo/delicious-gyoza-dumplings-with-dipping-sauce-30173542/"
-               target="_blank" rel="noopener">
-              <img src="https://images.pexels.com/photos/30173542/pexels-photo-30173542.jpeg?auto=compress&cs=tinysrgb&w=1200"
-                   alt="Gyozas crocantes com molho">
-            </a>
-            <span class="product-chip">Gyoza • 4 peças</span>
-          </div>
-          <div class="product-body">
-            <h3 class="product-title">Gyoza Street</h3>
-            <p class="product-tags">
-              Gyoza de carne ou camarão, mood boteco japonês de beco neon.
-            </p>
-            <div class="product-footer">
-              <div class="product-price">
-                <span>R$ 5,99 / 6,99</span>
-                <small>carne ou camarão</small>
-              </div>
-              <a class="btn-mini js-wa"
-                 href="https://wa.me/558491876897?text=Quero%20uma%20por%C3%A7%C3%A3o%20de%20Gyoza%20Tengu%21"
-                 target="_blank" rel="noopener">
-                Pedir
-              </a>
-            </div>
-          </div>
-        </article>
-      </div>
-    </section>
+/* ─── SUBMIT ORDER ────────────────────────── */
+async function submitOrder() {
+  const nome     = document.getElementById('fname').value.trim();
+  const endereco = document.getElementById('faddress').value.trim();
+  const whatsapp = document.getElementById('fwhatsapp').value.trim();
 
-    <!-- CARDÁPIO COMPLETO -->
-    <section id="cardapio">
-      <div class="section-header" data-reveal>
-        <div>
-          <h2 class="section-title">Cardápio Tengu</h2>
-          <p class="section-sub">
-            Quer ver todos os sabores de yakissoba, sushi, temaki e onigiri? Confira o cardápio oficial
-            e já manda mensagem no WhatsApp com o seu combo.
-          </p>
-        </div>
-      </div>
+  if (!nome)     { showToast('⚠ Informe seu nome!', true); return; }
+  if (!endereco) { showToast('⚠ Informe o endereço!', true); return; }
+  if (!whatsapp) { showToast('⚠ Informe o WhatsApp!', true); return; }
+  if (!selectedPayment) { showToast('⚠ Selecione o pagamento!', true); return; }
 
-      <div class="cardapio-wrapper" data-reveal>
-        <div class="cardapio-image">
-          <!-- Substitua este src pela imagem real do cardápio -->
-          <img src="WhatsApp Image 2025-11-22 at 19.11.05.jpeg" alt="Cardápio Tengu Delivery">
-        </div>
+  const btn = document.getElementById('confirmBtn');
+  btn.innerHTML = '<span class="spinner"></span> ENVIANDO...';
+  btn.disabled = true;
 
-        <div class="cardapio-content">
-          <h3>Como pedir?</h3>
-          <p>
-            É simples: abre o cardápio, escolhe seus itens e clica no botão para falar com a equipe Tengu
-            direto pelo WhatsApp. Atendimento rápido, objetivo e sem mistério.
-          </p>
+  const payload = {
+    cliente: { nome, endereco, whatsapp, pagamento: selectedPayment },
+    pedido: cart.map(c => ({ nome: c.name, quantidade: c.qty, preco: c.price })),
+    total: getTotal()
+  };
 
-          <ul class="bullet-list">
-            <li><span class="dot"></span> Yakissoba: carne, frango, camarão, misto e mistão.</li>
-            <li><span class="dot"></span> Sushi: uramaki, hossomaki e hot (8 peças).</li>
-            <li><span class="dot"></span> Temakis generosos com salmão, camarão empanado ou mix.</li>
-            <li><span class="dot"></span> Onigiri hot & tradicional em sabores especiais.</li>
-            <li><span class="dot"></span> Entrega a partir de R$4,00 no centro (demais bairros R$5,00).</li>
-          </ul>
+  try {
+    await fetch('https://tyrannisingly-mesorrhine-anaya.ngrok-free.dev/webhook/serviço-pedidos', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+  } catch (e) {
+    // ignore network errors — still show success
+    console.warn('Webhook error (ignored):', e);
+  }
 
-          <div class="cardapio-actions">
-            <a class="btn btn-neon"
-               href="WhatsApp Image 2025-11-22 at 19.11.05.jpeg"
-               target="_blank" rel="noopener">
-              Abrir cardápio em tamanho cheio
-            </a>
-            <a class="btn btn-ghost js-wa"
-               href="https://wa.me/558491876897?text=Me%20envia%20o%20card%C3%A1pio%20completo%20do%20Tengu%20Delivery%2C%20por%20favor%21"
-               target="_blank" rel="noopener">
-              Receber cardápio no WhatsApp
-            </a>
-          </div>
-        </div>
-      </div>
-    </section>
+  cart = [];
+  saveCart();
+  updateCartBadge();
+  updateFloatCart();
+  screenHistory = ['home', 'success'];
+  showScreen('success');
+}
 
-    <!-- CONTATO / RODAPÉ -->
-    <section id="contato">
-      <footer>
-        <div>
-            © <span id="year"></span> <a href="#top" class="footer-brand" title="Ir para o topo">Tengu Delivery</a> • Todos os direitos reservados.
-            <br>
-            Feito na timeline cyberpunk de Ceará-Mirim/RN.
-          </div>
-        <div class="social">
-          <span>Instagram:</span>
-          <a href="https://instagram.com/tengu.delivery" target="_blank" rel="noopener">
-            @tengu.delivery
-          </a>
-          <span>• WhatsApp: (84) 9 1876-8897</span>
-        </div>
-      </footer>
-    </section>
-  </main>
+/* ─── RESET ───────────────────────────────── */
+function resetApp() {
+  selectedPayment = '';
+  document.querySelectorAll('.pay-opt').forEach(o => o.classList.remove('selected'));
+  document.getElementById('fname').value = '';
+  document.getElementById('faddress').value = '';
+  document.getElementById('fwhatsapp').value = '';
+  document.getElementById('pixBox').classList.remove('show');
+  screenHistory = ['home'];
+  showScreen('home');
+}
 
-  <!-- FAB WhatsApp -->
-  <a class="whatsapp-fab js-wa"
-     href="https://wa.me/558491876897?text=Ol%C3%A1%2C%20vim%20do%20site%20da%20Tengu%20Delivery%20e%20quero%20fazer%20meu%20pedido%21"
-     target="_blank" rel="noopener"
-     aria-label="Fazer pedido pelo WhatsApp">
-    <svg viewBox="0 0 32 32" aria-hidden="true">
-      <path d="M16 3C9.373 3 4 8.373 4 15c0 2.112.552 4.105 1.6 5.889L4 29l8.31-1.571A12.08 12.08 0 0 0 16 27c6.627 0 12-5.373 12-12S22.627 3 16 3zm0 2c5.514 0 10 4.486 10 10s-4.486 10-10 10a9.98 9.98 0 0 1-3.989-.84l-.285-.127-4.938.933.944-4.813-.148-.295A9.95 9.95 0 0 1 6 15C6 9.486 10.486 5 16 5zm-2.326 4.5c-.265-.006-.532.002-.8.023-.415.034-.86.137-1.193.54-.316.383-1.105 1.08-1.105 2.635 0 1.555 1.132 3.057 1.29 3.268.16.212 2.193 3.512 5.402 4.781 3.209 1.27 3.209.847 3.788.814.579-.034 1.864-.762 2.129-1.498.265-.736.265-1.367.186-1.497-.079-.13-.291-.212-.609-.371-.318-.159-1.88-.926-2.17-1.032-.291-.106-.503-.159-.716.16-.212.318-.822 1.031-1.008 1.243-.186.212-.371.239-.689.08-.318-.159-1.342-.495-2.557-1.578-0.945-.844-1.583-1.887-1.77-2.205-.186-.318-.02-.49.14-.648.144-.142.318-.371.477-.557.159-.186.212-.318.318-.53.106-.212.053-.398-.027-.557-.079-.159-.701-1.751-.983-2.401-.252-.592-.509-.605-.774-.611z"></path>
-    </svg>
-  </a>
+/* ─── UI HELPERS ──────────────────────────── */
+function updateCartBadge() {
+  const qty = getTotalQty();
+  const badge = document.getElementById('cartBadge');
+  badge.textContent = qty;
+  badge.classList.toggle('visible', qty > 0);
+}
 
-  <script>
-    // Ano automático no rodapé
-    document.getElementById("year").textContent = new Date().getFullYear();
+function updateFloatCart() {
+  const fc = document.getElementById('floatCart');
+  const qty = getTotalQty();
+  const active = document.querySelector('.screen.active');
+  const hide = !active || ['cart','review','checkout','success'].some(s =>
+    active.id === 'screen-' + s
+  );
+  fc.classList.toggle('visible', qty > 0 && !hide);
+  document.getElementById('floatCount').textContent = qty + (qty === 1 ? ' item' : ' itens');
+  document.getElementById('floatTotal').textContent = fmtPrice(getTotal());
+}
 
-    // Scroll reveal simples
-    const revealEls = document.querySelectorAll("[data-reveal]");
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          io.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.2 });
+function showToast(msg, isError = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.borderColor = isError ? 'var(--neon-pink)' : 'var(--neon-green)';
+  t.style.color       = isError ? 'var(--neon-pink)' : 'var(--neon-green)';
+  t.style.textShadow  = isError
+    ? '0 0 8px rgba(255,45,120,.5)'
+    : '0 0 8px rgba(57,255,20,.5)';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
 
-    revealEls.forEach(el => io.observe(el));
-  </script>
+/* ─── INIT ────────────────────────────────── */
+updateCartBadge();
+updateFloatCart();
+</script>
 </body>
 </html>
